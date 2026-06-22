@@ -54,12 +54,12 @@ export default function TrendingNow() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+      <div className="flex gap-3 overflow-x-auto pb-3 md:grid md:grid-cols-3 lg:grid-cols-6 md:gap-5 snap-x snap-mandatory no-scrollbar">
 
         {products.map((product) => (
           <div
             key={product.name}
-            className="group cursor-pointer"
+            className="group cursor-pointer min-w-[120px] sm:min-w-[140px] md:min-w-0 flex-shrink-0 snap-start"
           >
 
             <div className="bg-gray-50 rounded-2xl p-4 relative">
@@ -68,13 +68,13 @@ export default function TrendingNow() {
                 <Heart size={16} />
               </button>
 
-              <div className="h-56 flex items-center justify-center">
+              <div className="h-32 sm:h-40 md:h-48 flex items-center justify-center">
 
                 <Image
                   src={product.image}
                   alt={product.name}
-                  width={180}
-                  height={180}
+                  width={140}
+                  height={140}
                   className="object-contain group-hover:scale-105 transition"
                 />
 

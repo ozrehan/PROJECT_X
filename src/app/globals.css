@@ -57,3 +57,20 @@ html, body {
   max-width: 100vw;
   overflow-x: hidden;
 }
+
+/* Scroll snapping helpers and hide scrollbar on mobile */
+.snap-x {
+  scroll-snap-type: x mandatory;
+}
+.snap-start {
+  scroll-snap-align: start;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
