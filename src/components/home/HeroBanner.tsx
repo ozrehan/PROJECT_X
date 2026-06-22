@@ -1,79 +1,79 @@
+"use client";
+
 import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 export default function HeroBanner() {
+  const banners = [
+    "/images/hero/hero-main.png",
+    "/images/hero/hero-slide-2.png",
+    "/images/hero/hero-slide-3.png",
+  ];
+
   return (
     <section className="max-w-7xl mx-auto px-4 mt-4">
-      <div className="relative overflow-hidden rounded-3xl h-[520px]">
 
-        {/* Background Image */}
-        <Image
-          src="/images/hero/hero-main.png"
-          alt="Oz Hero"
-          fill
-          priority
-          className="object-cover"
-        />
+      <Swiper
+        modules={[Navigation, Pagination, Autoplay]}
+        navigation
+        pagination={{ clickable: true }}
+        autoplay={{
+          delay: 4000,
+          disableOnInteraction: false,
+        }}
+        loop={true}
+        className="rounded-3xl overflow-hidden"
+      >
+        {banners.map((banner, index) => (
+          <SwiperSlide key={index}>
+            <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[520px]">
 
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
+              <Image
+                src={banner}
+                alt={`Banner ${index + 1}`}
+                fill
+                priority
+                className="object-cover"
+              />
 
-        {/* Content */}
-        <div className="absolute left-14 top-16 z-10 max-w-xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
 
-          <p className="text-amber-400 text-lg tracking-wide mb-6">
-            FASHION THAT DEFINES YOU
-          </p>
+              <div className="absolute left-6 md:left-12 lg:left-16 top-1/2 -translate-y-1/2 text-white max-w-xl">
 
-          <h1 className="text-white text-7xl font-bold leading-tight">
-            STYLE. QUALITY.
-          </h1>
+                <p className="text-amber-400 text-sm md:text-lg mb-4">
+                  FASHION THAT DEFINES YOU
+                </p>
 
-          <h1 className="text-amber-400 text-7xl font-bold leading-tight">
-            DELIVERED TODAY.
-          </h1>
+                <h1 className="font-bold leading-tight text-3xl md:text-5xl lg:text-7xl">
+                  STYLE. QUALITY.
+                </h1>
 
-          <p className="text-white text-2xl mt-8 leading-relaxed">
-            Explore the best fashion from
-            <br />
-            Hyderabad's top stores.
-          </p>
+                <h1 className="font-bold text-amber-400 leading-tight text-3xl md:text-5xl lg:text-7xl">
+                  DELIVERED TODAY.
+                </h1>
 
-          {/* Features */}
-          <div className="flex gap-8 mt-10 text-white">
+                <p className="mt-4 md:mt-8 text-sm md:text-lg lg:text-2xl">
+                  Explore the best fashion from
+                  <br />
+                  Hyderabad's top stores.
+                </p>
 
-            <div className="flex items-center gap-2">
-              ⚡
-              <span>Same Day Delivery</span>
+                <button className="mt-6 md:mt-10 bg-white text-black px-6 py-3 md:px-8 md:py-4 rounded-xl font-semibold hover:bg-gray-200 transition">
+                  SHOP NOW →
+                </button>
+
+              </div>
+
             </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
-            <div className="flex items-center gap-2">
-              ↻
-              <span>Easy Returns</span>
-            </div>
-
-            <div className="flex items-center gap-2">
-              ⭐
-              <span>Top Rated Stores</span>
-            </div>
-
-          </div>
-
-          {/* CTA */}
-          <button className="mt-10 bg-white text-black px-8 py-4 rounded-xl font-semibold hover:bg-gray-200 transition">
-            SHOP NOW →
-          </button>
-
-        </div>
-
-        {/* Slider Dots */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3">
-          <div className="w-8 h-3 bg-amber-400 rounded-full" />
-          <div className="w-3 h-3 bg-white rounded-full" />
-          <div className="w-3 h-3 bg-white rounded-full" />
-          <div className="w-3 h-3 bg-white rounded-full" />
-        </div>
-
-      </div>
     </section>
   );
 }
