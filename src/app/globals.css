@@ -1,1 +1,59 @@
 @import "tailwindcss";
+
+/* Mobile-first base styles */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Ensure images are responsive */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Touch-friendly buttons */
+button, a {
+  min-height: 44px; /* Minimum touch target */
+}
+
+/* Fix Swiper on mobile */
+.swiper {
+  overflow: visible !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: flex;
+  }
+}
+
+/* Responsive typography */
+@media (max-width: 640px) {
+  h1, h2, h3 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* Prevent horizontal overflow */
+* {
+  max-width: 100vw;
+}
+
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}

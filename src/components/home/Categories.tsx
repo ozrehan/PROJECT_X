@@ -9,30 +9,29 @@ const categories = [
 
 export default function Categories() {
   return (
-    <section className="max-w-7xl mx-auto px-4 py-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-
+    <section className="w-full px-3 sm:px-4 py-4 sm:py-6 max-w-full">
+      {/* Mobile: horizontal scroll row; Tablet+ : grid */}
+      <div className="flex gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 md:grid-cols-4 sm:gap-4 md:gap-6">
         {categories.map((item) => (
-          <div
+          <button
             key={item.name}
-            className="flex flex-col items-center"
+            className="min-w-[110px] sm:min-w-0 flex-shrink-0 sm:flex-shrink-1 flex flex-col items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg hover:bg-gray-100 transition duration-200 hover:shadow-md"
           >
-            <div className="w-24 h-24 flex items-center justify-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center bg-gray-50 rounded-lg">
               <Image
                 src={item.image}
                 alt={item.name}
                 width={80}
                 height={80}
-                className="object-contain"
+                className="object-contain w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20"
               />
             </div>
 
-            <p className="mt-2 text-sm font-medium">
+            <p className="text-xs sm:text-sm md:text-base font-medium text-center line-clamp-2">
               {item.name}
             </p>
-          </div>
+          </button>
         ))}
-
       </div>
     </section>
   );
