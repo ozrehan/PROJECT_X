@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   MapPin,
   ChevronDown,
@@ -14,7 +15,7 @@ import {
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   return (
     <header className="bg-black text-white sticky top-0 z-50">
@@ -36,27 +37,29 @@ export default function Navbar() {
           </div>
 
           {/* Logo */}
-          <h1 className="text-2xl sm:text-4xl text-amber-400 font-serif mx-auto sm:mx-0">
-            Oz
-          </h1>
+          <Link href="/">
+            <h1 className="text-2xl sm:text-4xl text-amber-400 font-serif mx-auto sm:mx-0 cursor-pointer hover:opacity-80 transition">
+              Oz
+            </h1>
+          </Link>
 
           {/* Right Icons */}
           <div className="flex items-center gap-3 sm:gap-6 ml-auto">
             {/* User - Icon only on mobile, with label on tablet+ */}
-            <button className="hidden sm:flex flex-col items-center hover:opacity-75 transition">
+            <button className="hidden sm:flex flex-col items-center hover:opacity-75 transition" aria-label="Login">
               <User size={20} />
               <span className="text-[10px] mt-1">Login</span>
             </button>
-            <button className="sm:hidden p-2 hover:bg-zinc-900 rounded">
+            <button className="sm:hidden p-2 hover:bg-zinc-900 rounded" aria-label="User account">
               <User size={18} />
             </button>
 
             {/* Wishlist - Icon only on mobile */}
-            <button className="hidden sm:flex flex-col items-center hover:opacity-75 transition">
+            <button className="hidden sm:flex flex-col items-center hover:opacity-75 transition" aria-label="Wishlist">
               <Heart size={20} />
               <span className="text-[10px] mt-1">Wishlist</span>
             </button>
-            <button className="sm:hidden p-2 hover:bg-zinc-900 rounded">
+            <button className="sm:hidden p-2 hover:bg-zinc-900 rounded" aria-label="Wishlist">
               <Heart size={18} />
             </button>
 
@@ -92,10 +95,20 @@ export default function Navbar() {
             </button>
 
             {/* Search Input */}
-            <div className="flex flex-1 bg-white rounded-lg sm:rounded-xl overflow-hidden">
+            <form 
+              className="flex flex-1 bg-white rounded-lg sm:rounded-xl overflow-hidden"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (searchQuery.trim()) {
+                  window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
+                }
+              }}
+            >
               <input
                 type="text"
                 placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="flex-1 px-3 sm:px-6 py-3 sm:py-0 h-12 sm:h-14 text-black outline-none text-sm"
               />
 
@@ -106,10 +119,10 @@ export default function Navbar() {
               </button>
 
               {/* Search Button */}
-              <button className="bg-amber-500 px-3 sm:px-6 flex items-center justify-center hover:bg-amber-600 transition flex-shrink-0">
+              <button type="submit" className="bg-amber-500 px-3 sm:px-6 flex items-center justify-center hover:bg-amber-600 transition flex-shrink-0" aria-label="Search">
                 <Search className="text-white" size={18} />
               </button>
-            </div>
+            </form>
           </div>
         </div>
 

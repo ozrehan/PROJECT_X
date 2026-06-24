@@ -1,7 +1,9 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import Image from "next/image";
+import { ChevronRight, Heart } from "lucide-react";
+import { useState } from "react";
 
 const categories = [
   { name: "Men", icon: "👨" },
@@ -36,7 +38,16 @@ const shopByOptions = [
   { name: "Accessories", count: "" },
 ];
 
-export default function CategoriesPage() {
+interface CategoryPageProps {
+  params: { category: string };
+}
+
+export default function CategoryPage({ params }: CategoryPageProps) {
+  const categoryName = params.category
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
   return (
     <>
       <Navbar />
@@ -63,7 +74,7 @@ export default function CategoriesPage() {
           <div className="grid gap-6 xl:grid-cols-[240px_1fr]">
             {/* Sidebar */}
             <aside className="hidden xl:block">
-              <div className="space-y-6">
+              <div className="space-y-6 sticky top-32">
                 {/* Categories Section */}
                 <div>
                   <h3 className="mb-4 text-sm font-semibold uppercase tracking-widest text-slate-900">Categories</h3>
@@ -72,7 +83,11 @@ export default function CategoriesPage() {
                       <Link
                         key={cat.name}
                         href={`/categories/${cat.name.toLowerCase().replace(/ /g, "-")}`}
-                        className="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50 hover:text-amber-700 transition text-sm"
+                        className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
+                          cat.name === categoryName
+                            ? "bg-amber-50 text-amber-700 font-semibold"
+                            : "text-slate-700 hover:bg-amber-50 hover:text-amber-700"
+                        }`}
                       >
                         <span>{cat.name}</span>
                         <ChevronRight size={16} />
@@ -88,7 +103,7 @@ export default function CategoriesPage() {
                     {shopByOptions.map((option) => (
                       <Link
                         key={option.name}
-                        href={`/categories/${option.name.toLowerCase().replace(/ /g, "-")}`}
+                        href={`/categories/${categoryName.toLowerCase().replace(/ /g, "-")}/${option.name.toLowerCase().replace(/ /g, "-")}`}
                         className="flex items-center justify-between rounded-lg px-3 py-2 text-slate-700 hover:bg-amber-50 hover:text-amber-700 transition text-sm"
                       >
                         <span>{option.name}</span>
@@ -122,12 +137,12 @@ export default function CategoriesPage() {
               {/* Header */}
               <div className="mb-8">
                 <div className="mb-3 text-sm text-slate-600">
-                  <Link href="/" className="hover:text-slate-900">Home</Link> / <Link href="/categories" className="hover:text-slate-900">Categories</Link> / <span className="font-semibold text-slate-900">Men</span>
+                  <Link href="/" className="hover:text-slate-900">Home</Link> / <Link href="/categories" className="hover:text-slate-900">Categories</Link> / <span className="font-semibold text-slate-900">{categoryName}</span>
                 </div>
                 <div className="flex items-start justify-between gap-6">
                   <div>
-                    <h1 className="text-4xl font-bold text-slate-900 mb-2">Men</h1>
-                    <p className="text-slate-600">Discover our wide range of men&apos;s fashion across top styles and categories.</p>
+                    <h1 className="text-4xl font-bold text-slate-900 mb-2">{categoryName}</h1>
+                    <p className="text-slate-600">Discover our wide range of {categoryName.toLowerCase()} fashion across top styles and categories.</p>
                   </div>
                   <div className="text-right">
                     <div className="text-sm text-slate-500">Shop by Category</div>
@@ -157,7 +172,7 @@ export default function CategoriesPage() {
                 ].map((cat) => (
                   <Link
                     key={cat.name}
-                    href={`/categories/men/${cat.name.toLowerCase().replace(/ /g, "-")}`}
+                    href={`/products?category=${categoryName}&subcategory=${cat.name}`}
                     className="group overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition hover:shadow-lg hover:shadow-slate-200"
                   >
                     <div className="relative h-40 w-full bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center overflow-hidden">

@@ -1,16 +1,36 @@
+import Navbar from "@/components/layout/Navbar";
+import FiltersSidebar from "@/components/search/FiltersSidebar";
+import ProductResults from "@/components/search/ProductResults";
+
 export default function SearchPage() {
   return (
-    <div className="w-full px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8">
-        Search Results
-      </h1>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4 lg:gap-6">
-        {/* Search result cards would be populated here */}
-        <div className="border rounded-lg sm:rounded-xl p-3 sm:p-4 bg-gray-50 flex items-center justify-center text-center text-gray-500 h-32 sm:h-40">
-          <p className="text-xs sm:text-sm">Search results appear here</p>
+    <>
+      <Navbar />
+      
+      {/* Category Navigation */}
+      <div className="border-b border-slate-200 bg-white sticky top-16 z-40">
+        <div className="mx-auto max-w-[1600px] px-4 xl:px-0">
+          <div className="flex items-center gap-6 overflow-x-auto py-3 text-sm font-medium">
+            {['Men', 'Women', 'Kids', 'Ethnic Wear', 'Footwear', 'Accessories', 'New Arrivals', 'Brands', 'Offers'].map((category) => (
+              <button
+                key={category}
+                className="whitespace-nowrap text-slate-700 hover:text-slate-900 transition pb-3 border-b-2 border-transparent hover:border-amber-500"
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+
+      <div className="bg-slate-50 min-h-screen py-8">
+        <div className="mx-auto max-w-[1600px] px-4 xl:px-0">
+          <div className="grid gap-6 xl:grid-cols-[320px_1fr]">
+            <FiltersSidebar />
+            <ProductResults />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
