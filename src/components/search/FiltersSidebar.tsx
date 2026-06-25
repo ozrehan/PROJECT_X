@@ -1,4 +1,4 @@
-export default function FiltersSidebar() {
+export default function FiltersSidebar() {  
   return (
     <aside className="w-[320px] border-r border-slate-200 min-h-screen p-6 hidden xl:block bg-white">
 
