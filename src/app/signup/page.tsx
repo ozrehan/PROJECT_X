@@ -1,13 +1,13 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CartLayout from "@/components/cart/CartLayout";
+import SignupLayout from "@/components/signup/SignupLayout";
 
-export default function CartPage() {
+export default function SignupPage() {
   return (
     <>
       <Navbar />
 
-      <CartLayout />
+      <SignupLayout />
 
       <Footer />
     </>

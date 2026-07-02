@@ -1,48 +1,118 @@
+import Image from "next/image";
+
 export default function RegisterPage() {
   return (
-    <div className="w-full min-h-screen px-4 sm:px-6 py-8 sm:py-12 flex items-center justify-center">
-      <div className="w-full max-w-md border border-gray-300 p-6 sm:p-8 rounded-lg sm:rounded-xl bg-white shadow-lg">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">
-          Create Account
-        </h1>
+    <div className="h-screen overflow-hidden relative">
 
-        <div className="space-y-4">
-          <input
-            className="border border-gray-300 p-3 sm:p-4 w-full rounded-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 text-sm sm:text-base"
-            placeholder="Full Name"
-            type="text"
-          />
+      {/* Background */}
+      <Image
+        src="/images/auth/jack.png"
+        alt="background"
+        fill
+        priority
+        className="object-cover"
+      />
 
-          <input
-            className="border border-gray-300 p-3 sm:p-4 w-full rounded-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 text-sm sm:text-base"
-            placeholder="Email"
-            type="email"
-          />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/45" />
 
-          <input
-            type="password"
-            className="border border-gray-300 p-3 sm:p-4 w-full rounded-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 text-sm sm:text-base"
-            placeholder="Password"
-          />
+      {/* Main Card */}
+      <div className="relative z-10 h-screen flex items-center justify-center p-8">
 
-          <input
-            type="password"
-            className="border border-gray-300 p-3 sm:p-4 w-full rounded-lg focus:outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-200 text-sm sm:text-base"
-            placeholder="Confirm Password"
-          />
+        <div className="w-[1200px] h-[650px] backdrop-blur-md bg-black/35 border border-white/10 rounded-[25px] overflow-hidden shadow-2xl">
 
-          <button className="bg-amber-500 text-white w-full py-3 sm:py-4 rounded-lg font-semibold hover:bg-amber-600 transition text-sm sm:text-base mt-6">
-            Create Account
-          </button>
+          <div className="grid grid-cols-2 h-full">
+
+            {/* LEFT */}
+            <div className="flex flex-col justify-center px-16 text-white">
+
+              <h1 className="text-6xl font-bold">
+                Let's Get Started
+              </h1>
+
+              <p className="mt-6 text-gray-300 leading-8 max-w-[420px]">
+                Welcome to Oz marketplace. Create your account and
+                discover the best fashion experience.
+              </p>
+
+            </div>
+
+            {/* RIGHT */}
+            <div className="flex items-center justify-center">
+
+              <div className="w-[420px]">
+
+                <h2 className="text-white text-4xl font-bold mb-12">
+                  Sign up
+                </h2>
+
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  className="w-full bg-transparent border-b border-gray-500 py-4 text-white outline-none mb-6"
+                />
+
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  className="w-full bg-transparent border-b border-gray-500 py-4 text-white outline-none mb-6"
+                />
+
+                <input
+                  type="password"
+                  placeholder="Password"
+                  className="w-full bg-transparent border-b border-gray-500 py-4 text-white outline-none mb-6"
+                />
+
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="w-full bg-transparent border-b border-gray-500 py-4 text-white outline-none"
+                />
+
+                <button className="w-full h-[50px] rounded-lg bg-green-700 hover:bg-green-800 text-white font-semibold mt-10">
+                  Sign Up
+                </button>
+
+                <div className="flex justify-between items-center mt-8">
+
+                  <span className="text-gray-300">
+                    Already a member?
+                  </span>
+
+                  <button className="text-white underline">
+                    Sign in
+                  </button>
+
+                </div>
+
+                {/* Social */}
+                <div className="flex gap-4 mt-10">
+
+                  <button className="w-12 h-12 rounded-full border border-white text-white">
+                    f
+                  </button>
+
+                  <button className="w-12 h-12 rounded-full border border-white text-white">
+                    X
+                  </button>
+
+                  <button className="w-12 h-12 rounded-full border border-white text-white">
+                    G
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
-        <p className="text-center mt-4 text-xs sm:text-sm text-gray-600">
-          Already have an account?{" "}
-          <a href="/login" className="text-amber-500 hover:text-amber-600 font-semibold">
-            Login
-          </a>
-        </p>
       </div>
+
     </div>
   );
 }
