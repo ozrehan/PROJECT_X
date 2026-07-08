@@ -5,98 +5,88 @@ import Image from "next/image";
 import { Heart, ChevronLeft, ChevronRight, Play } from "lucide-react";
 
 const images = [
-  "/images/products/black-shirt/front.png",
-  "/images/products/black-shirt/back.png",
-  "/images/products/black-shirt/side.png",
-  "/images/products/black-shirt/fabric.png",
+  "/images/products/shirt.jpeg",
+  "/images/products/tshirt.jpeg",
+  "/images/products/jacket.jpeg",
+  "/images/products/kurta.jpeg",
 ];
 
 export default function ProductGallery() {
   const [selected, setSelected] = useState(0);
 
+  const showNext = () => setSelected((prev) => (prev + 1) % images.length);
+  const showPrev = () =>
+    setSelected((prev) => (prev - 1 + images.length) % images.length);
+
   return (
-    <div>
-
-      <div className="relative border rounded-3xl overflow-hidden bg-[#f8f8f8]">
-
-        {/* Badge */}
-
-        <div className="absolute left-4 top-4 z-20 bg-black text-white px-3 py-1 rounded-lg text-xs font-semibold">
+    <div className="w-full">
+      <div className="relative overflow-hidden rounded-[28px] border border-gray-200 bg-gradient-to-br from-gray-50 via-white to-gray-100 p-2 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.25)] sm:p-3">
+        <div className="absolute left-3 top-3 z-10 flex items-center gap-2 rounded-full bg-black/90 px-3 py-1 text-xs font-semibold text-white">
+          <span className="h-2 w-2 rounded-full bg-amber-400" />
           Bestseller
         </div>
 
-        {/* Wishlist */}
-
-        <button className="absolute right-4 top-4 z-20 bg-white p-2 rounded-full shadow hover:scale-105 transition">
-          <Heart size={20} />
+        <button
+          aria-label="Add to wishlist"
+          className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 shadow-lg backdrop-blur transition hover:scale-105"
+        >
+          <Heart size={18} className="text-slate-700" />
         </button>
 
-        {/* Previous */}
-
-        <button className="absolute left-3 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow">
-          <ChevronLeft />
+        <button
+          onClick={showPrev}
+          className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg backdrop-blur transition hover:scale-105"
+          aria-label="Previous image"
+        >
+          <ChevronLeft size={20} className="text-slate-700" />
         </button>
 
-        {/* Next */}
-
-        <button className="absolute right-3 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow">
-          <ChevronRight />
+        <button
+          onClick={showNext}
+          className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg backdrop-blur transition hover:scale-105"
+          aria-label="Next image"
+        >
+          <ChevronRight size={20} className="text-slate-700" />
         </button>
-
-        {/* Main Image */}
 
         <Image
           src={images[selected]}
-          alt="Product"
+          alt="Selected clothing product"
           width={700}
-          height={850}
-          className="w-full h-[650px] object-contain"
+          height={900}
+          priority
+          className="aspect-[4/5] w-full rounded-[22px] object-cover"
         />
-
       </div>
 
-      {/* Thumbnails */}
-
-      <div className="flex gap-3 mt-4">
-
+      <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
         {images.map((img, index) => (
-
           <button
             key={img}
             onClick={() => setSelected(index)}
-            className={`border rounded-xl overflow-hidden ${
-              selected === index
-                ? "border-black"
-                : "border-gray-300"
+            aria-label={`View product preview ${index + 1}`}
+            className={`shrink-0 overflow-hidden rounded-2xl border-2 ${
+              selected === index ? "border-amber-500" : "border-gray-200"
             }`}
           >
-
             <Image
               src={img}
               alt=""
               width={90}
               height={110}
-              className="object-cover"
+              className="h-[100px] w-[90px] object-cover"
             />
-
           </button>
-
         ))}
 
-        {/* Video */}
-
-        <button className="border rounded-xl w-[90px] h-[110px] flex flex-col items-center justify-center hover:bg-gray-100">
-
-          <Play size={28} />
-
-          <span className="text-xs mt-2">
-            View Video
-          </span>
-
+        <button
+          aria-label="Watch product video"
+          className="flex h-[100px] w-[90px] shrink-0 flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-gray-50 text-xs font-medium text-gray-600 transition hover:bg-gray-100"
+        >
+          <Play size={20} />
+          <span className="mt-2">Video</span>
         </button>
-
       </div>
-
     </div>
   );
 }
