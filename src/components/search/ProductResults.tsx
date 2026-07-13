@@ -188,11 +188,11 @@ export default function ProductResults() {
           <span className="font-semibold text-slate-900">Order within 2h 30m for delivery today</span>
         </div>
 
-        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 xl:grid-cols-5">
           {products.map((product) => (
             <Link key={product.id} href={`/products/${product.id}`} className="group block overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200">
               <div className="relative overflow-hidden bg-white">
-                <div className="absolute left-4 top-4 flex gap-2">
+                <div className="absolute left-4 top-4 flex flex-wrap gap-2">
                   {product.labels.map((label) => (
                     <span key={label} className="rounded-full bg-slate-900 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
                       {label}
@@ -209,7 +209,7 @@ export default function ProductResults() {
                 >
                   <Heart size={18} fill={wishlist.includes(product.id) ? 'red' : 'none'} />
                 </button>
-                <div className="relative h-72 w-full p-8">
+                <div className="relative h-72 w-full p-6">
                   <Image
                     src={product.image}
                     alt={product.name}
