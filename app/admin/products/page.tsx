@@ -42,7 +42,10 @@ import {
   Video,
   FileVideo,
   PlusCircle,
-  ChevronUp
+  ChevronUp,
+  FileCheck,
+  Building2,
+  FileText
 } from "lucide-react";
 
 export default function AdminProductsPage() {
@@ -174,15 +177,16 @@ export default function AdminProductsPage() {
 
   const menuItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
-    { icon: Package, label: "Products", path: "/admin/products", active: true },
-    { icon: ShoppingCart, label: "Orders", path: "/admin/orders" },
-    { icon: Box, label: "Inventory", path: "/admin/inventory" },
-    { icon: DollarSign, label: "Revenue", path: "/admin/revenue" },
+    { icon: FileCheck, label: "Store Approvals", path: "/admin/store-approval" },
+    { icon: Store, label: "Stores", path: "/admin/stores" },
     { icon: Users, label: "Customers", path: "/admin/customers" },
-    { icon: Star, label: "Reviews", path: "/admin/reviews" },
-    { icon: Megaphone, label: "Marketing", path: "/admin/marketing" },
-    { icon: Settings, label: "Store Settings", path: "/admin/settings" },
-    { icon: CreditCard, label: "Payouts", path: "/admin/payouts" },
+    { icon: ShoppingCart, label: "Orders", path: "/admin/orders" },
+    { icon: Package, label: "Products", path: "/admin/products", active: true },
+    { icon: Building2, label: "Categories", path: "/admin/categories" },
+    { icon: CreditCard, label: "Payments", path: "/admin/payments" },
+    { icon: DollarSign, label: "Revenue", path: "/admin/revenue" },
+    { icon: FileText, label: "Reports", path: "/admin/reports" },
+    { icon: Settings, label: "Settings", path: "/admin/settings" },
     { icon: LogOut, label: "Logout", path: "/logout" }
   ];
 
@@ -269,7 +273,7 @@ export default function AdminProductsPage() {
       <nav className="h-[72px] bg-black flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-50">
         {/* Left side */}
         <div className="flex items-center gap-4">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white hover:text-orange-500 transition-colors">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white hover:text-blue-500 transition-colors">
             <Menu size={24} />
           </button>
           <div className="flex items-center gap-2">
@@ -278,8 +282,8 @@ export default function AdminProductsPage() {
             </div>
           </div>
           <div className="relative">
-            <button className="flex items-center gap-2 text-white hover:text-orange-500 transition-colors">
-              <span className="text-sm font-medium">{storeSelector}</span>
+            <button className="flex items-center gap-2 text-white hover:text-blue-500 transition-colors">
+              <span className="text-sm font-medium">Admin Panel</span>
               <ChevronDown size={16} />
             </button>
           </div>
@@ -291,7 +295,7 @@ export default function AdminProductsPage() {
             <input
               type="text"
               placeholder="Search products, orders, customers..."
-              className="w-full bg-gray-800 text-white placeholder-gray-400 rounded-lg py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full bg-gray-800 text-white placeholder-gray-400 rounded-lg py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
           </div>
@@ -299,17 +303,17 @@ export default function AdminProductsPage() {
 
         {/* Right side */}
         <div className="flex items-center gap-4">
-          <button className="relative text-white hover:text-orange-500 transition-colors">
+          <button className="relative text-white hover:text-blue-500 transition-colors">
             <Bell size={24} />
             <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
-              <span className="text-white font-semibold">JD</span>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+              <span className="text-white font-semibold">AD</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-white text-sm font-medium">John Doe</span>
-              <span className="text-gray-400 text-xs">Store Owner</span>
+              <span className="text-white text-sm font-medium">Admin User</span>
+              <span className="text-gray-400 text-xs">Super Admin</span>
             </div>
             <ChevronDown size={16} className="text-gray-400" />
           </div>
@@ -331,25 +335,25 @@ export default function AdminProductsPage() {
                   href={item.path}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     item.active
-                      ? "bg-orange-50 text-orange-600"
+                      ? "bg-blue-50 text-blue-600"
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
-                  <item.icon size={20} className={item.active ? "text-orange-600" : ""} />
+                  <item.icon size={20} className={item.active ? "text-blue-600" : ""} />
                   <span className="font-medium">{item.label}</span>
                 </a>
               ))}
             </nav>
 
             {/* Help card */}
-            <div className="mt-auto bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
+            <div className="mt-auto bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
               <div className="flex items-center gap-2 mb-3">
-                <HelpCircle className="text-orange-600" size={20} />
-                <span className="font-semibold text-gray-800">Need Help?</span>
+                <HelpCircle className="text-blue-600" size={20} />
+                <span className="font-semibold text-gray-800">Admin Support</span>
               </div>
-              <p className="text-sm text-gray-600 mb-3">Get support for your store</p>
-              <button className="w-full bg-orange-500 text-white py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-                Contact Support
+              <p className="text-sm text-gray-600 mb-3">Get admin assistance</p>
+              <button className="w-full bg-blue-500 text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors">
+                Contact Admin Support
               </button>
             </div>
           </div>
@@ -357,21 +361,21 @@ export default function AdminProductsPage() {
 
         {/* Main Content */}
         <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-0"}`}>
-          <div className="p-8">
+          <div className="p-6 lg:p-8">
             {/* Action Buttons */}
             <div className="flex justify-end gap-3 mb-8">
               <button className="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                 <Upload size={18} />
                 <span className="font-medium">Bulk Upload</span>
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+              <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
                 <Plus size={18} />
                 <span className="font-medium">Add Product</span>
               </button>
             </div>
 
             {/* Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
               {stats.map((stat, index) => (
                 <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <div className="flex items-start justify-between mb-4">
@@ -387,7 +391,7 @@ export default function AdminProductsPage() {
             </div>
 
             {/* Product Toolbar */}
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-4 lg:mb-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="relative flex-1 max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -396,14 +400,14 @@ export default function AdminProductsPage() {
                     placeholder="Search products by name, SKU, status..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div className="flex items-center gap-3">
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   >
                     {categories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -414,7 +418,7 @@ export default function AdminProductsPage() {
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   >
                     {statuses.map((status) => (
                       <option key={status} value={status}>
@@ -431,7 +435,7 @@ export default function AdminProductsPage() {
             </div>
 
             {/* Products Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4 lg:mb-6">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -439,7 +443,7 @@ export default function AdminProductsPage() {
                       <th className="px-6 py-4 text-left">
                         <input
                           type="checkbox"
-                          className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                          className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                         />
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -471,7 +475,7 @@ export default function AdminProductsPage() {
                         <td className="px-6 py-4">
                           <input
                             type="checkbox"
-                            className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                            className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                           />
                         </td>
                         <td className="px-6 py-4">
@@ -541,7 +545,7 @@ export default function AdminProductsPage() {
                   <select
                     value={itemsPerPage}
                     onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                    className="px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm"
+                    className="px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
                   >
                     <option value={10}>10</option>
                     <option value={25}>25</option>
@@ -552,7 +556,7 @@ export default function AdminProductsPage() {
                   <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50">
                     <ChevronLeft size={20} />
                   </button>
-                  <button className="px-3 py-1 bg-orange-500 text-white rounded-lg">1</button>
+                  <button className="px-3 py-1 bg-blue-500 text-white rounded-lg">1</button>
                   <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">2</button>
                   <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">3</button>
                   <span className="px-2">...</span>
