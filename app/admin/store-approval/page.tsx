@@ -351,7 +351,7 @@ export default function StoreApprovalPage() {
         <aside
           className={`bg-white border-r border-gray-200 transition-all duration-300 ${
             sidebarOpen ? "w-64" : "w-0 overflow-hidden"
-          } fixed left-0 top-[72px] bottom-0 z-40`}
+          } fixed left-0 top-[72px] bottom-0 z-40 overflow-y-auto`}
         >
           <div className="h-full flex flex-col p-4">
             <nav className="flex-1 space-y-1">
@@ -388,16 +388,6 @@ export default function StoreApprovalPage() {
         {/* Main Content */}
         <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-0"}`}>
           <div className="p-8">
-            {/* Header */}
-            <div className="mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Store Approval Management</h1>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <a href="/admin" className="hover:text-orange-500">Dashboard</a>
-                <ChevronRight size={16} />
-                <span className="text-orange-600 font-medium">Store Approvals</span>
-              </div>
-            </div>
-
             {/* Action Buttons */}
             <div className="flex justify-end gap-3 mb-8">
               <button className="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
