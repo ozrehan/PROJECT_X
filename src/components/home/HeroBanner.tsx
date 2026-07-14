@@ -10,7 +10,6 @@ import "swiper/css/pagination";
 
 export default function HeroBanner() {
   const banners = [
-    "/images/hero/hero-main.png",
     "/images/hero/hero-slide-2.png",
     "/images/hero/hero-slide-3.png",
   ];
