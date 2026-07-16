@@ -41,8 +41,18 @@ import {
   Ban,
   MoreHorizontal,
   Crown,
-  BadgeCheck
+  BadgeCheck,
+  FileCheck,
+  Building2,
+  FileText
 } from "lucide-react";
+
+interface MenuItem {
+  icon: any;
+  label: string;
+  path: string;
+  active?: boolean;
+}
 
 export default function UsersPage() {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
@@ -155,7 +165,7 @@ export default function UsersPage() {
     }
   ];
 
-  const menuItems = [
+  const menuItems: MenuItem[] = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
     { icon: FileCheck, label: "Store Approvals", path: "/admin/store-approval" },
     { icon: Store, label: "Stores", path: "/admin/stores" },

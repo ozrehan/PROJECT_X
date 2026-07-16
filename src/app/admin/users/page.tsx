@@ -41,8 +41,24 @@ import {
   Ban,
   MoreHorizontal,
   Crown,
-  BadgeCheck
+  BadgeCheck,
+  Download,
+  MapPin,
+  Phone,
+  Eye,
+  FileText,
+  Send,
+  Truck,
+  Building2,
+  FileCheck
 } from "lucide-react";
+
+interface MenuItem {
+  icon: any;
+  label: string;
+  path: string;
+  active?: boolean;
+}
 
 export default function UsersPage() {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
@@ -172,36 +188,55 @@ export default function UsersPage() {
   const stats = [
     {
       icon: Users,
-      value: "850",
+      value: "2,847",
       label: "Total Users",
-      description: "Registered users",
-      color: "purple",
-      bgColor: "bg-purple-100",
-      iconColor: "text-purple-600"
-    },
-    {
-      icon: Check,
-      value: "720",
-      label: "Active Users",
-      description: "Currently active",
-      color: "green",
-      bgColor: "bg-green-100",
-      iconColor: "text-green-600"
-    },
-    {
-      icon: TrendingUp,
-      value: "45",
-      label: "New Signups",
-      description: "This week",
+      change: "+12.5%",
+      changePositive: true,
+      description: "from last month",
       color: "blue",
       bgColor: "bg-blue-100",
       iconColor: "text-blue-600"
     },
     {
-      icon: Ban,
-      value: "12",
-      label: "Suspended",
-      description: "Require attention",
+      icon: User,
+      value: "1,856",
+      label: "Customers",
+      change: "+8.2%",
+      changePositive: true,
+      description: "from last month",
+      color: "green",
+      bgColor: "bg-green-100",
+      iconColor: "text-green-600"
+    },
+    {
+      icon: Store,
+      value: "523",
+      label: "Store Owners",
+      change: "+15.3%",
+      changePositive: true,
+      description: "from last month",
+      color: "purple",
+      bgColor: "bg-purple-100",
+      iconColor: "text-purple-600"
+    },
+    {
+      icon: Truck,
+      value: "312",
+      label: "Delivery Partners",
+      change: "+5.7%",
+      changePositive: true,
+      description: "from last month",
+      color: "orange",
+      bgColor: "bg-orange-100",
+      iconColor: "text-orange-600"
+    },
+    {
+      icon: Crown,
+      value: "156",
+      label: "Admins",
+      change: "+2.1%",
+      changePositive: true,
+      description: "from last month",
       color: "red",
       bgColor: "bg-red-100",
       iconColor: "text-red-600"
@@ -216,8 +251,33 @@ export default function UsersPage() {
     "Notifications"
   ];
 
-  const roles = ["All Roles", "Admin", "Seller", "Customer"];
+  const roles = ["All Roles", "Admin", "Store Owner", "Delivery Partner", "Customer"];
   const statuses = ["All Status", "Active", "Inactive", "Suspended"];
+  const locations = ["All Locations", "Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Hyderabad"];
+
+  const roleDistribution = [
+    { role: "Customers", count: 1856, percentage: 65, color: "#22c55e" },
+    { role: "Store Owners", count: 523, percentage: 18, color: "#a855f7" },
+    { role: "Delivery Partners", count: 312, percentage: 11, color: "#f97316" },
+    { role: "Admins", count: 156, percentage: 6, color: "#ef4444" }
+  ];
+
+  const newUsersThisMonth = [
+    { role: "Customers", count: 142, icon: User, color: "text-green-600" },
+    { role: "Store Owners", count: 38, icon: Store, color: "text-purple-600" },
+    { role: "Delivery Partners", count: 24, icon: Truck, color: "text-orange-600" },
+    { role: "Admins", count: 5, icon: Crown, color: "text-red-600" }
+  ];
+
+  const usersByLocation = [
+    { location: "Mumbai", count: 523 },
+    { location: "Delhi", count: 412 },
+    { location: "Bangalore", count: 387 },
+    { location: "Chennai", count: 298 },
+    { location: "Kolkata", count: 245 },
+    { location: "Hyderabad", count: 198 },
+    { location: "Others", count: 784 }
+  ];
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -248,11 +308,13 @@ export default function UsersPage() {
   const getRoleBadge = (role: string) => {
     switch (role) {
       case "Admin":
+        return "bg-red-100 text-red-700";
+      case "Store Owner":
         return "bg-purple-100 text-purple-700";
-      case "Seller":
-        return "bg-blue-100 text-blue-700";
-      case "Customer":
+      case "Delivery Partner":
         return "bg-orange-100 text-orange-700";
+      case "Customer":
+        return "bg-green-100 text-green-700";
       default:
         return "bg-gray-100 text-gray-700";
     }
@@ -262,8 +324,10 @@ export default function UsersPage() {
     switch (role) {
       case "Admin":
         return Crown;
-      case "Seller":
+      case "Store Owner":
         return Store;
+      case "Delivery Partner":
+        return Truck;
       case "Customer":
         return User;
       default:
@@ -367,28 +431,35 @@ export default function UsersPage() {
         <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-0"}`}>
           <div className="p-8">
             {/* Action Buttons */}
-            <div className="flex justify-end gap-3 mb-8">
-              <button className="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                <Upload size={18} />
-                <span className="font-medium">Bulk Import</span>
-              </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
-                <Plus size={18} />
-                <span className="font-medium">Add User</span>
-              </button>
+            <div className="flex justify-between items-center mb-8">
+              <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
+              <div className="flex gap-3">
+                <button className="flex items-center gap-2 px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                  <Download size={18} />
+                  <span className="font-medium">Export Users</span>
+                </button>
+                <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                  <Plus size={18} />
+                  <span className="font-medium">Add New User</span>
+                </button>
+              </div>
             </div>
 
             {/* Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
               {stats.map((stat, index) => (
-                <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`${stat.bgColor} p-3 rounded-xl`}>
-                      <stat.icon size={24} className={stat.iconColor} />
+                <div key={index} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className={`${stat.bgColor} p-2.5 rounded-xl`}>
+                      <stat.icon size={20} className={stat.iconColor} />
+                    </div>
+                    <div className={`flex items-center gap-1 text-sm font-medium ${stat.changePositive ? 'text-green-600' : 'text-red-600'}`}>
+                      {stat.changePositive ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+                      <span>{stat.change}</span>
                     </div>
                   </div>
-                  <h3 className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</h3>
-                  <p className="text-sm font-medium text-gray-700 mb-1">{stat.label}</p>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</h3>
+                  <p className="text-sm font-medium text-gray-700">{stat.label}</p>
                   <p className="text-xs text-gray-500">{stat.description}</p>
                 </div>
               ))}
@@ -396,22 +467,22 @@ export default function UsersPage() {
 
             {/* User Toolbar */}
             <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="relative flex-1 max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     type="text"
-                    placeholder="Search users by name, email, role..."
+                    placeholder="Search users by name, email, phone..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <select
                     value={roleFilter}
                     onChange={(e) => setRoleFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
                   >
                     {roles.map((role) => (
                       <option key={role} value={role}>
@@ -422,7 +493,7 @@ export default function UsersPage() {
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
                   >
                     {statuses.map((status) => (
                       <option key={status} value={status}>
@@ -430,6 +501,22 @@ export default function UsersPage() {
                       </option>
                     ))}
                   </select>
+                  <select
+                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
+                  >
+                    {locations.map((location) => (
+                      <option key={location} value={location}>
+                        {location}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg">
+                    <Calendar size={16} className="text-gray-400" />
+                    <input
+                      type="date"
+                      className="border-none focus:outline-none text-sm text-gray-600"
+                    />
+                  </div>
                   <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                     <Filter size={18} />
                     <span className="font-medium">Filters</span>
@@ -447,7 +534,7 @@ export default function UsersPage() {
                       <th className="px-6 py-4 text-left">
                         <input
                           type="checkbox"
-                          className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                          className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                         />
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -457,16 +544,19 @@ export default function UsersPage() {
                         Role
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Email/Phone
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Location
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Joined On
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Status
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Last Active
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Total Orders
-                      </th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                        Total Spent
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Actions
@@ -481,7 +571,7 @@ export default function UsersPage() {
                           <td className="px-6 py-4">
                             <input
                               type="checkbox"
-                              className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                              className="w-4 h-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                             />
                           </td>
                           <td className="px-6 py-4">
@@ -489,50 +579,59 @@ export default function UsersPage() {
                               <img
                                 src={user.avatar}
                                 alt={user.name}
-                                className="w-12 h-12 rounded-full object-cover"
+                                className="w-10 h-10 rounded-full object-cover"
                               />
                               <div>
-                                <p className="font-semibold text-gray-900 mb-1">{user.name}</p>
-                                <p className="text-sm text-gray-500 mb-1">{user.email}</p>
-                                <div className="flex items-center gap-1 text-xs text-gray-400">
-                                  <Calendar size={12} />
-                                  <span>Joined {user.joinedDate}</span>
-                                </div>
+                                <p className="font-semibold text-gray-900 mb-0.5">{user.name}</p>
+                                <p className="text-xs text-gray-400">ID: #{user.id}</p>
                               </div>
                             </div>
                           </td>
                           <td className="px-6 py-4">
-                            <div className="flex items-center gap-2">
-                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getRoleBadge(user.role)}`}>
-                                <RoleIcon size={14} className="mr-1" />
-                                {user.role}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="px-6 py-4">
-                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusBadge(user.status)}`}>
-                              {user.status}
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getRoleBadge(user.role)}`}>
+                              <RoleIcon size={12} className="mr-1" />
+                              {user.role}
                             </span>
                           </td>
                           <td className="px-6 py-4">
-                            <span className="text-sm text-gray-600">{user.lastActive}</span>
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                                <Mail size={12} className="text-gray-400" />
+                                <span className="truncate max-w-[150px]">{user.email}</span>
+                              </div>
+                              <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                                <Phone size={12} className="text-gray-400" />
+                                <span>+91 98765 43210</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                              <MapPin size={14} className="text-gray-400" />
+                              <span>Mumbai</span>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className="text-sm text-gray-600">{user.joinedDate}</span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(user.status)}`}>
+                              {user.status}
+                            </span>
                           </td>
                           <td className="px-6 py-4">
                             <span className="text-sm font-medium text-gray-900">{user.totalOrders}</span>
                           </td>
                           <td className="px-6 py-4">
-                            <span className="text-sm font-bold text-gray-900">{user.totalSpent}</span>
-                          </td>
-                          <td className="px-6 py-4">
-                            <div className="flex items-center gap-2">
-                              <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                                <Edit size={16} className="text-gray-600" />
+                            <div className="flex items-center gap-1.5">
+                              <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                                <Eye size={14} className="text-gray-600" />
                               </button>
-                              <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                                <MoreHorizontal size={16} className="text-gray-600" />
+                              <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                                <Edit size={14} className="text-gray-600" />
                               </button>
-                              <button className="p-2 border border-gray-200 rounded-lg hover:bg-red-50 transition-colors">
-                                <Ban size={16} className="text-red-500" />
+                              <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                                <MoreVertical size={14} className="text-gray-600" />
                               </button>
                             </div>
                           </td>
@@ -550,7 +649,7 @@ export default function UsersPage() {
                   <select
                     value={itemsPerPage}
                     onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                    className="px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm"
+                    className="px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
                   >
                     <option value={10}>10</option>
                     <option value={25}>25</option>
@@ -561,11 +660,11 @@ export default function UsersPage() {
                   <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50">
                     <ChevronLeft size={20} />
                   </button>
-                  <button className="px-3 py-1 bg-orange-500 text-white rounded-lg">1</button>
+                  <button className="px-3 py-1 bg-blue-500 text-white rounded-lg">1</button>
                   <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">2</button>
                   <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">3</button>
                   <span className="px-2">...</span>
-                  <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">85</button>
+                  <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">285</button>
                   <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                     <ChevronRight size={20} />
                   </button>
@@ -573,226 +672,147 @@ export default function UsersPage() {
               </div>
             </div>
 
-            {/* Bottom Management Panel */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              {/* Tabs */}
-              <div className="flex border-b border-gray-200 overflow-x-auto">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
-                      activeTab === tab
-                        ? "text-orange-600 border-b-2 border-orange-500 bg-orange-50"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-
-              {/* Tab Content */}
-              <div className="p-6">
-                {activeTab === "User Details" && (
-                  <div className="space-y-6">
-                    <div className="flex items-start gap-6 p-6 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border border-orange-200">
-                      <img
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop"
-                        alt="Selected User"
-                        className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+            {/* Analytics Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+              {/* Users by Role - Pie Chart */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Users by Role</h3>
+                <div className="flex items-center gap-6">
+                  <div className="relative w-32 h-32">
+                    <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.91549430918954"
+                        fill="transparent"
+                        stroke="#e5e7eb"
+                        strokeWidth="3"
                       />
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-2">John Doe</h3>
-                        <p className="text-gray-600 mb-3">john.doe@example.com</p>
-                        <div className="flex flex-wrap gap-3">
-                          <span className="inline-flex items-center px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
-                            <Crown size={14} className="mr-1" />
-                            Admin
-                          </span>
-                          <span className="inline-flex items-center px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                            Active
-                          </span>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm text-gray-500 mb-1">Member Since</p>
-                        <p className="text-lg font-semibold text-gray-900">Jan 15, 2024</p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="p-4 border border-gray-200 rounded-xl">
-                        <div className="flex items-center gap-2 mb-2">
-                          <ShoppingCart className="text-orange-500" size={20} />
-                          <span className="font-semibold">Total Orders</span>
-                        </div>
-                        <p className="text-3xl font-bold text-gray-900">45</p>
-                      </div>
-                      <div className="p-4 border border-gray-200 rounded-xl">
-                        <div className="flex items-center gap-2 mb-2">
-                          <DollarSign className="text-green-500" size={20} />
-                          <span className="font-semibold">Total Spent</span>
-                        </div>
-                        <p className="text-3xl font-bold text-gray-900">₹45,230</p>
-                      </div>
-                      <div className="p-4 border border-gray-200 rounded-xl">
-                        <div className="flex items-center gap-2 mb-2">
-                          <BadgeCheck className="text-blue-500" size={20} />
-                          <span className="font-semibold">Account Status</span>
-                        </div>
-                        <p className="text-3xl font-bold text-green-600">Active</p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="p-4 border border-gray-200 rounded-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                          <User className="text-orange-500" size={20} />
-                          <span className="font-semibold">Personal Information</span>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-sm text-gray-500">Phone:</span>
-                            <span className="text-sm font-medium">+91 98765 43210</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-gray-500">Location:</span>
-                            <span className="text-sm font-medium">Mumbai, India</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-gray-500">Date of Birth:</span>
-                            <span className="text-sm font-medium">Jan 15, 1990</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-4 border border-gray-200 rounded-xl">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Shield className="text-orange-500" size={20} />
-                          <span className="font-semibold">Security Settings</span>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-sm text-gray-500">2FA Enabled:</span>
-                            <span className="text-sm font-medium text-green-600">Yes</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-gray-500">Last Password Change:</span>
-                            <span className="text-sm font-medium">30 days ago</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-gray-500">Login Attempts:</span>
-                            <span className="text-sm font-medium">0 failed</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.91549430918954"
+                        fill="transparent"
+                        stroke="#22c55e"
+                        strokeWidth="3"
+                        strokeDasharray="65 35"
+                        strokeLinecap="round"
+                      />
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.91549430918954"
+                        fill="transparent"
+                        stroke="#a855f7"
+                        strokeWidth="3"
+                        strokeDasharray="18 82"
+                        strokeDashoffset="-65"
+                        strokeLinecap="round"
+                      />
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.91549430918954"
+                        fill="transparent"
+                        stroke="#f97316"
+                        strokeWidth="3"
+                        strokeDasharray="11 89"
+                        strokeDashoffset="-83"
+                        strokeLinecap="round"
+                      />
+                      <circle
+                        cx="18"
+                        cy="18"
+                        r="15.91549430918954"
+                        fill="transparent"
+                        stroke="#ef4444"
+                        strokeWidth="3"
+                        strokeDasharray="6 94"
+                        strokeDashoffset="-94"
+                        strokeLinecap="round"
+                      />
+                    </svg>
                   </div>
-                )}
-
-                {activeTab === "Activity Log" && (
-                  <div className="space-y-4">
-                    {[
-                      { action: "Logged in", time: "2 hours ago", ip: "192.168.1.1" },
-                      { action: "Updated profile", time: "1 day ago", ip: "192.168.1.1" },
-                      { action: "Changed password", time: "3 days ago", ip: "192.168.1.2" },
-                      { action: "Placed order #12345", time: "5 days ago", ip: "192.168.1.1" },
-                      { action: "Account created", time: "Jan 15, 2024", ip: "192.168.1.1" }
-                    ].map((log, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                            <Check size={20} className="text-orange-600" />
-                          </div>
-                          <div>
-                            <p className="font-medium text-gray-900">{log.action}</p>
-                            <p className="text-sm text-gray-500">IP: {log.ip}</p>
-                          </div>
-                        </div>
-                        <span className="text-sm text-gray-500">{log.time}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {activeTab === "Order History" && (
-                  <div className="space-y-4">
-                    {[
-                      { id: "#12345", date: "Jun 10, 2024", amount: "₹2,450", status: "Delivered" },
-                      { id: "#12344", date: "May 28, 2024", amount: "₹1,890", status: "Delivered" },
-                      { id: "#12343", date: "May 15, 2024", amount: "₹3,200", status: "Delivered" },
-                      { id: "#12342", date: "Apr 30, 2024", amount: "₹980", status: "Cancelled" }
-                    ].map((order, index) => (
-                      <div key={index} className="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors">
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                            <ShoppingCart size={24} className="text-gray-600" />
-                          </div>
-                          <div>
-                            <p className="font-semibold text-gray-900">{order.id}</p>
-                            <p className="text-sm text-gray-500">{order.date}</p>
-                          </div>
+                  <div className="flex-1 space-y-2">
+                    {roleDistribution.map((item) => (
+                      <div key={item.role} className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }}></div>
+                          <span className="text-sm text-gray-600">{item.role}</span>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-gray-900">{order.amount}</p>
-                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                            order.status === "Delivered" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                          }`}>
-                            {order.status}
-                          </span>
+                          <span className="text-sm font-semibold text-gray-900">{item.count}</span>
+                          <span className="text-xs text-gray-500 ml-1">({item.percentage}%)</span>
                         </div>
                       </div>
                     ))}
                   </div>
-                )}
+                </div>
+              </div>
 
-                {activeTab === "Permissions" && (
-                  <div className="space-y-4">
-                    <div className="p-4 border border-gray-200 rounded-xl">
-                      <h4 className="font-semibold mb-4">User Permissions</h4>
-                      <div className="space-y-3">
-                        {[
-                          "View Products",
-                          "Place Orders",
-                          "Write Reviews",
-                          "Manage Wishlist",
-                          "Track Orders"
-                        ].map((permission, index) => (
-                          <div key={index} className="flex items-center justify-between">
-                            <span className="text-sm text-gray-700">{permission}</span>
-                            <div className="w-12 h-6 bg-orange-500 rounded-full relative cursor-pointer">
-                              <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow"></div>
-                            </div>
-                          </div>
-                        ))}
+              {/* New Users This Month */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">New Users This Month</h3>
+                <div className="space-y-3">
+                  {newUsersThisMonth.map((item) => (
+                    <div key={item.role} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${item.color.replace('text-', 'bg-').replace('600', '100')}`}>
+                          <item.icon size={18} className={item.color} />
+                        </div>
+                        <span className="text-sm font-medium text-gray-700">{item.role}</span>
                       </div>
+                      <span className="text-lg font-bold text-gray-900">{item.count}</span>
                     </div>
-                  </div>
-                )}
+                  ))}
+                </div>
+              </div>
 
-                {activeTab === "Notifications" && (
-                  <div className="space-y-4">
-                    <div className="p-4 border border-gray-200 rounded-xl">
-                      <h4 className="font-semibold mb-4">Notification Preferences</h4>
-                      <div className="space-y-3">
-                        {[
-                          "Order Updates",
-                          "Promotional Emails",
-                          "Account Security",
-                          "New Product Alerts",
-                          "Price Drop Notifications"
-                        ].map((notification, index) => (
-                          <div key={index} className="flex items-center justify-between">
-                            <span className="text-sm text-gray-700">{notification}</span>
-                            <div className="w-12 h-6 bg-orange-500 rounded-full relative cursor-pointer">
-                              <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow"></div>
-                            </div>
-                          </div>
-                        ))}
+              {/* Users by Location */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">Users by Location</h3>
+                <div className="space-y-3">
+                  {usersByLocation.map((item) => (
+                    <div key={item.location} className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <MapPin size={16} className="text-gray-400" />
+                        <span className="text-sm text-gray-600">{item.location}</span>
                       </div>
+                      <span className="text-sm font-semibold text-gray-900">{item.count}</span>
                     </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <button className="flex flex-col items-center gap-2 p-4 border-2 border-dashed border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all group">
+                  <div className="p-3 bg-blue-100 rounded-xl group-hover:bg-blue-200 transition-colors">
+                    <Plus size={24} className="text-blue-600" />
                   </div>
-                )}
+                  <span className="text-sm font-medium text-gray-700">Add New User</span>
+                </button>
+                <button className="flex flex-col items-center gap-2 p-4 border-2 border-dashed border-gray-200 rounded-xl hover:border-green-500 hover:bg-green-50 transition-all group">
+                  <div className="p-3 bg-green-100 rounded-xl group-hover:bg-green-200 transition-colors">
+                    <Upload size={24} className="text-green-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">Import Users</span>
+                </button>
+                <button className="flex flex-col items-center gap-2 p-4 border-2 border-dashed border-gray-200 rounded-xl hover:border-purple-500 hover:bg-purple-50 transition-all group">
+                  <div className="p-3 bg-purple-100 rounded-xl group-hover:bg-purple-200 transition-colors">
+                    <Edit size={24} className="text-purple-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">Bulk Update</span>
+                </button>
+                <button className="flex flex-col items-center gap-2 p-4 border-2 border-dashed border-gray-200 rounded-xl hover:border-orange-500 hover:bg-orange-50 transition-all group">
+                  <div className="p-3 bg-orange-100 rounded-xl group-hover:bg-orange-200 transition-colors">
+                    <Send size={24} className="text-orange-600" />
+                  </div>
+                  <span className="text-sm font-medium text-gray-700">Send Notification</span>
+                </button>
               </div>
             </div>
           </div>
