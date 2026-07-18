@@ -117,15 +117,15 @@ export default function Navbar() {
 
       <div className="h-[48px] border-b flex items-center justify-center gap-14 bg-white text-[15px]">
 
-        <Link href="/search?q=Men" className="hover:text-[#D9A441] transition">Men</Link>
-        <Link href="/search?q=Women" className="hover:text-[#D9A441] transition">Women</Link>
-        <Link href="/search?q=Kids" className="hover:text-[#D9A441] transition">Kids</Link>
-        <Link href="/search?q=Ethnic Wear" className="hover:text-[#D9A441] transition">Ethnic Wear</Link>
-        <Link href="/search?q=Footwear" className="hover:text-[#D9A441] transition">Footwear</Link>
-        <Link href="/search?q=Accessories" className="hover:text-[#D9A441] transition">Accessories</Link>
-        <Link href="/search?q=New Arrivals" className="hover:text-[#D9A441] transition">New Arrivals</Link>
-        <Link href="/search?q=Brands" className="hover:text-[#D9A441] transition">Brands</Link>
-        <Link href="/search?q=Offers" className="hover:text-[#D9A441] transition">Offers</Link>
+        <Link href="/categories/men" className="hover:text-[#D9A441] transition">Men</Link>
+        <Link href="/categories/women" className="hover:text-[#D9A441] transition">Women</Link>
+        <Link href="/categories/kids" className="hover:text-[#D9A441] transition">Kids</Link>
+        <Link href="/categories/ethnic-wear" className="hover:text-[#D9A441] transition">Ethnic Wear</Link>
+        <Link href="/categories/footwear" className="hover:text-[#D9A441] transition">Footwear</Link>
+        <Link href="/categories/accessories" className="hover:text-[#D9A441] transition">Accessories</Link>
+        <Link href="/categories/new-arrivals" className="hover:text-[#D9A441] transition">New Arrivals</Link>
+        <Link href="/categories/brands" className="hover:text-[#D9A441] transition">Brands</Link>
+        <Link href="/categories/offers" className="hover:text-[#D9A441] transition">Offers</Link>
 
       </div>
     </>
