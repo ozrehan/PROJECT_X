@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const stores = [
   {
@@ -50,7 +51,8 @@ export default function FeaturedStores() {
       <div className="flex gap-3 overflow-x-auto pb-3 snap-x snap-mandatory md:grid md:grid-cols-5 md:gap-4 no-scrollbar">
 
         {stores.map((store) => (
-          <div
+          <Link
+            href={store.name === "Fashion Hub" ? "/stores/fashion-hub" : `/search?q=${encodeURIComponent(store.name)}`}
             key={store.name}
             className="relative rounded-2xl overflow-hidden h-36 sm:h-44 md:h-52 min-w-[160px] flex-shrink-0 snap-start group cursor-pointer"
           >
@@ -80,7 +82,7 @@ export default function FeaturedStores() {
 
             </div>
 
-          </div>
+          </Link>
         ))}
 
       </div>
