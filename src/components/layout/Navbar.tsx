@@ -18,8 +18,6 @@ const categories = [
   "Women",
   "Kids",
   "Ethnic Wear",
-  "Footwear",
-  "Accessories",
   "New Arrivals",
   "Brands",
   "Offers",

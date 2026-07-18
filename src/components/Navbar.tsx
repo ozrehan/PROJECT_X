@@ -121,8 +121,6 @@ export default function Navbar() {
         <Link href="/categories/women" className="hover:text-[#D9A441] transition">Women</Link>
         <Link href="/categories/kids" className="hover:text-[#D9A441] transition">Kids</Link>
         <Link href="/categories/ethnic-wear" className="hover:text-[#D9A441] transition">Ethnic Wear</Link>
-        <Link href="/categories/footwear" className="hover:text-[#D9A441] transition">Footwear</Link>
-        <Link href="/categories/accessories" className="hover:text-[#D9A441] transition">Accessories</Link>
         <Link href="/categories/new-arrivals" className="hover:text-[#D9A441] transition">New Arrivals</Link>
         <Link href="/categories/brands" className="hover:text-[#D9A441] transition">Brands</Link>
         <Link href="/categories/offers" className="hover:text-[#D9A441] transition">Offers</Link>
