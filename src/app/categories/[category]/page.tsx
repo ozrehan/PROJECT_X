@@ -51,25 +51,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     <>
       <Navbar />
 
-      {/* Category Navigation */}
-      <div className="border-b border-slate-200 bg-white sticky top-16 z-40">
-        <div className="mx-auto max-w-[1600px] px-4 xl:px-0">
-          <div className="flex items-center gap-6 overflow-x-auto py-3 text-sm font-medium">
-            {categories.map((cat) => (
-              <Link
-                key={cat.name}
-                href={`/categories/${cat.name.toLowerCase().replace(/ /g, "-")}`}
-                className="whitespace-nowrap text-slate-700 hover:text-slate-900 transition pb-3 border-b-2 border-transparent hover:border-amber-500"
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-
       <div className="bg-white min-h-screen">
-        <div className="mx-auto max-w-[1600px] px-4 xl:px-0 py-8">
+        <div className="mx-auto max-w-[1600px] px-4 md:px-8 py-8">
           <div className="grid gap-6 xl:grid-cols-[240px_1fr]">
             {/* Sidebar */}
             <aside className="hidden xl:block">
@@ -191,7 +174,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
       {/* Features Section */}
       <div className="border-y border-slate-200 bg-slate-50 py-12">
-        <div className="mx-auto max-w-[1600px] px-4 xl:px-0">
+        <div className="mx-auto max-w-[1600px] px-4 md:px-8">
           <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
             {[
               { icon: "🏆", title: "Top Quality Products", desc: "Premium quality & trusted brands" },
