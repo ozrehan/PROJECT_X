@@ -1,4 +1,4 @@
-// original Footer.tsx restored to empty file
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -20,11 +20,11 @@ export default function Footer() {
           <h3 className="font-bold mb-4">SHOP</h3>
 
           <ul className="space-y-2 text-gray-400">
-            <li>Men</li>
-            <li>Women</li>
-            <li>Kids</li>
-            <li>Footwear</li>
-            <li>Accessories</li>
+            <li><Link href="/categories/men" className="hover:text-amber-400 transition">Men</Link></li>
+            <li><Link href="/categories" className="hover:text-amber-400 transition">Women</Link></li>
+            <li><Link href="/categories" className="hover:text-amber-400 transition">Kids</Link></li>
+            <li><Link href="/categories" className="hover:text-amber-400 transition">Footwear</Link></li>
+            <li><Link href="/categories" className="hover:text-amber-400 transition">Accessories</Link></li>
           </ul>
         </div>
 
@@ -32,10 +32,10 @@ export default function Footer() {
           <h3 className="font-bold mb-4">HELP</h3>
 
           <ul className="space-y-2 text-gray-400">
-            <li>Contact Us</li>
-            <li>FAQs</li>
-            <li>Returns</li>
-            <li>Shipping</li>
+            <li><Link href="/contact" className="hover:text-amber-400 transition">Contact Us</Link></li>
+            <li><Link href="/faq" className="hover:text-amber-400 transition">FAQs</Link></li>
+            <li><Link href="/faq" className="hover:text-amber-400 transition">Returns</Link></li>
+            <li><Link href="/faq" className="hover:text-amber-400 transition">Shipping</Link></li>
           </ul>
         </div>
 
@@ -43,9 +43,9 @@ export default function Footer() {
           <h3 className="font-bold mb-4">ABOUT</h3>
 
           <ul className="space-y-2 text-gray-400">
-            <li>About Us</li>
-            <li>Careers</li>
-            <li>Privacy Policy</li>
+            <li><Link href="/about" className="hover:text-amber-400 transition">About Us</Link></li>
+            <li><Link href="/about" className="hover:text-amber-400 transition">Careers</Link></li>
+            <li><Link href="/privacy-policy" className="hover:text-amber-400 transition">Privacy Policy</Link></li>
           </ul>
         </div>
 
@@ -55,11 +55,11 @@ export default function Footer() {
           </h3>
 
           <div className="space-y-3">
-            <button className="border px-4 py-3 rounded-lg w-full">
+            <button className="border border-zinc-700 px-4 py-3 rounded-lg w-full hover:bg-white/10 transition">
               Google Play
             </button>
 
-            <button className="border px-4 py-3 rounded-lg w-full">
+            <button className="border border-zinc-700 px-4 py-3 rounded-lg w-full hover:bg-white/10 transition">
               App Store
             </button>
           </div>

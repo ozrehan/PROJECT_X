@@ -90,7 +90,7 @@ function CategoryNavigation({ mobile = false }: { mobile?: boolean }) {
       <div className={mobile ? "flex flex-wrap gap-x-5 gap-y-1" : "mx-auto flex h-15 max-w-[1440px] items-center justify-center gap-9 px-8 xl:gap-13"}>
         {categories.map((category, index) => (
           <Link
-            href={category === "Men" ? "/categories/men" : "/categories"}
+            href={`/categories/${category.toLowerCase().replace(/ /g, "-")}`}
             key={category}
             className={`${mobile ? "py-2 text-sm text-zinc-200" : "relative flex h-full items-center text-sm font-medium text-zinc-900 transition hover:text-amber-700 after:absolute after:bottom-0 after:left-0 after:h-[3px] after:w-0 after:bg-amber-500 after:transition-all hover:after:w-full"} ${index === 0 && !mobile ? "after:w-full" : ""}`}
           >
