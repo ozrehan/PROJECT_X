@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
 import { Heart } from "lucide-react";
 
 const products = [
@@ -75,14 +78,15 @@ export default function BestSellers() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
 
         {products.map((product) => (
-          <div
+          <Link
+            href={`/search?q=${encodeURIComponent(product.name)}`}
             key={product.name}
-            className="group cursor-pointer"
+            className="group cursor-pointer block"
           >
 
             <div className="bg-gray-50 rounded-2xl p-4 relative">
 
-              <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow">
+              <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow" onClick={(e) => e.preventDefault()}>
                 <Heart size={16} />
               </button>
 
@@ -100,7 +104,7 @@ export default function BestSellers() {
 
             </div>
 
-            <h3 className="mt-3 font-medium">
+            <h3 className="mt-3 font-medium text-black">
               {product.name}
             </h3>
 
@@ -109,7 +113,7 @@ export default function BestSellers() {
             </p>
 
             <div className="mt-2 flex items-center gap-2 flex-wrap">
-              <span className="font-bold text-xl">
+              <span className="font-bold text-xl text-black">
                 ₹{product.price}
               </span>
 
@@ -117,7 +121,7 @@ export default function BestSellers() {
                 ₹{product.oldPrice}
               </span>
 
-              <span className="text-red-500 text-sm">
+              <span className="text-red-500 text-sm font-semibold">
                 {product.discount}
               </span>
             </div>
@@ -126,7 +130,7 @@ export default function BestSellers() {
               ⭐ {product.rating}
             </p>
 
-          </div>
+          </Link>
         ))}
 
       </div>

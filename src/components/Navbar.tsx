@@ -18,11 +18,11 @@ export default function Navbar() {
 
         {/* LOGO */}
 
-        <div className="w-[110px]">
-          <h1 className="text-[#D9A441] text-[54px] leading-none font-serif">
+        <Link href="/" className="w-[110px]">
+          <h1 className="text-[#D9A441] text-[54px] leading-none font-serif cursor-pointer hover:opacity-90">
             Oz
           </h1>
-        </div>
+        </Link>
 
         {/* LOCATION */}
 
@@ -49,9 +49,10 @@ export default function Navbar() {
 
         {/* SEARCH */}
 
-        <div className="flex flex-1 max-w-[760px] ml-12">
+        <form action="/search" method="GET" className="flex flex-1 max-w-[760px] ml-12">
 
           <input
+            name="q"
             placeholder="Search for products, brands and more..."
             className="
               h-[42px]
@@ -67,34 +68,34 @@ export default function Navbar() {
             All Categories ▼
           </div>
 
-          <button className="bg-[#D9A441] w-[56px] rounded-r-lg flex items-center justify-center">
+          <button type="submit" className="bg-[#D9A441] w-[56px] rounded-r-lg flex items-center justify-center hover:bg-[#c99431] transition">
             <Search
               size={22}
               color="white"
             />
           </button>
 
-        </div>
+        </form>
 
         {/* RIGHT ICONS */}
 
         <div className="flex items-center gap-14 ml-auto">
 
-          <div className="flex flex-col items-center text-white cursor-pointer">
+          <Link href="/wishlist" className="flex flex-col items-center text-white cursor-pointer hover:text-[#D9A441] transition">
             <Heart size={24} />
             <span className="text-[13px] mt-1">
               Wishlist
             </span>
-          </div>
+          </Link>
 
-          <div className="flex flex-col items-center text-white cursor-pointer">
+          <Link href="/login" className="flex flex-col items-center text-white cursor-pointer hover:text-[#D9A441] transition">
             <User size={24} />
             <span className="text-[13px] mt-1">
               Account
             </span>
-          </div>
+          </Link>
 
-          <div className="relative flex flex-col items-center text-white cursor-pointer">
+          <Link href="/cart" className="relative flex flex-col items-center text-white cursor-pointer hover:text-[#D9A441] transition">
 
             <div className="absolute -top-2 right-1 bg-[#D9A441] text-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
               2
@@ -106,7 +107,7 @@ export default function Navbar() {
               Cart
             </span>
 
-          </div>
+          </Link>
 
         </div>
 
@@ -116,15 +117,15 @@ export default function Navbar() {
 
       <div className="h-[48px] border-b flex items-center justify-center gap-14 bg-white text-[15px]">
 
-        <Link href="/">Men</Link>
-        <Link href="/">Women</Link>
-        <Link href="/">Kids</Link>
-        <Link href="/">Ethnic Wear</Link>
-        <Link href="/">Footwear</Link>
-        <Link href="/">Accessories</Link>
-        <Link href="/">New Arrivals</Link>
-        <Link href="/">Brands</Link>
-        <Link href="/">Offers</Link>
+        <Link href="/search?q=Men" className="hover:text-[#D9A441] transition">Men</Link>
+        <Link href="/search?q=Women" className="hover:text-[#D9A441] transition">Women</Link>
+        <Link href="/search?q=Kids" className="hover:text-[#D9A441] transition">Kids</Link>
+        <Link href="/search?q=Ethnic Wear" className="hover:text-[#D9A441] transition">Ethnic Wear</Link>
+        <Link href="/search?q=Footwear" className="hover:text-[#D9A441] transition">Footwear</Link>
+        <Link href="/search?q=Accessories" className="hover:text-[#D9A441] transition">Accessories</Link>
+        <Link href="/search?q=New Arrivals" className="hover:text-[#D9A441] transition">New Arrivals</Link>
+        <Link href="/search?q=Brands" className="hover:text-[#D9A441] transition">Brands</Link>
+        <Link href="/search?q=Offers" className="hover:text-[#D9A441] transition">Offers</Link>
 
       </div>
     </>

@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
 import { Heart } from "lucide-react";
 
 const products = [
@@ -57,14 +60,15 @@ export default function TrendingNow() {
       <div className="flex gap-3 overflow-x-auto pb-3 md:grid md:grid-cols-3 lg:grid-cols-6 md:gap-5 snap-x snap-mandatory no-scrollbar">
 
         {products.map((product) => (
-          <div
+          <Link
+            href={`/search?q=${encodeURIComponent(product.name)}`}
             key={product.name}
-            className="group cursor-pointer min-w-[120px] sm:min-w-[140px] md:min-w-0 flex-shrink-0 snap-start"
+            className="group cursor-pointer min-w-[120px] sm:min-w-[140px] md:min-w-0 flex-shrink-0 snap-start block"
           >
 
             <div className="bg-gray-50 rounded-2xl p-4 relative">
 
-              <button className="absolute top-3 right-3 bg-white rounded-full p-2 shadow">
+              <button className="absolute top-3 right-3 bg-white rounded-full p-2 shadow" onClick={(e) => e.preventDefault()}>
                 <Heart size={16} />
               </button>
 
@@ -82,7 +86,7 @@ export default function TrendingNow() {
 
             </div>
 
-            <h3 className="mt-3 font-medium text-sm">
+            <h3 className="mt-3 font-medium text-sm text-black">
               {product.name}
             </h3>
 
@@ -91,7 +95,7 @@ export default function TrendingNow() {
             </p>
 
             <div className="mt-2 flex items-center gap-2">
-              <span className="font-bold">
+              <span className="font-bold text-black">
                 ₹{product.price}
               </span>
 
@@ -104,7 +108,7 @@ export default function TrendingNow() {
               ⚡ Delivery Today
             </p>
 
-          </div>
+          </Link>
         ))}
 
       </div>
