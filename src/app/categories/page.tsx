@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 
 const categories = [
@@ -119,32 +120,36 @@ export default function CategoriesPage() {
                 </div>
               </div>
 
-              {/* Category Grid */}
               <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
                 {[
-                  { name: "T-Shirts", count: 980, image: "👕" },
-                  { name: "Shirts", count: 0, image: "🧵" },
-                  { name: "Jeans", count: 820, image: "👖" },
-                  { name: "Trousers", count: 650, image: "📍" },
-                  { name: "Shorts", count: 420, image: "⏱️" },
-                  { name: "Jackets", count: 540, image: "🧥" },
-                  { name: "Hoodies & Sweatshirts", count: 610, image: "🎽" },
-                  { name: "Blazers & Suits", count: 310, image: "🎩" },
-                  { name: "Sportswear", count: 560, image: "⚽" },
-                  { name: "Ethnic Wear", count: 380, image: "🧣" },
-                  { name: "Innerwear & Sleepwear", count: 720, image: "🛏️" },
-                  { name: "Shoes", count: 960, image: "👟" },
-                  { name: "Accessories", count: 1140, image: "🎒" },
-                  { name: "Bags & Backpacks", count: 480, image: "🎒" },
-                  { name: "Sunglasses", count: 350, image: "😎" },
+                  { name: "T-Shirts", count: 980, image: "/images/products/tshirt.jpeg" },
+                  { name: "Shirts", count: 850, image: "/images/products/shirt.jpeg" },
+                  { name: "Jeans", count: 820, image: "/images/products/jeans.jpeg" },
+                  { name: "Trousers", count: 650, image: "/images/bestsellers/cargo-pant.jpeg" },
+                  { name: "Shorts", count: 420, image: "/images/bestsellers/cargo-pant.jpeg" },
+                  { name: "Jackets", count: 540, image: "/images/products/jacket.jpeg" },
+                  { name: "Hoodies & Sweatshirts", count: 610, image: "/images/bestsellers/hoodie.jpeg" },
+                  { name: "Blazers & Suits", count: 310, image: "/images/products/blazer.jpeg" },
+                  { name: "Sportswear", count: 560, image: "/images/products/shoe.jpeg" },
+                  { name: "Ethnic Wear", count: 380, image: "/images/products/kurta.jpeg" },
+                  { name: "Innerwear & Sleepwear", count: 720, image: "/images/bestsellers/hoodie.jpeg" },
+                  { name: "Shoes", count: 960, image: "/images/products/shoe.jpeg" },
+                  { name: "Accessories", count: 1140, image: "/images/products/jacket.jpeg" },
+                  { name: "Bags & Backpacks", count: 480, image: "/images/products/jacket.jpeg" },
+                  { name: "Sunglasses", count: 350, image: "/images/products/sunglasses.jpeg" },
                 ].map((cat) => (
                   <Link
                     key={cat.name}
                     href={`/categories/men/${cat.name.toLowerCase().replace(/ /g, "-")}`}
                     className="group overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 transition hover:shadow-lg hover:shadow-slate-200"
                   >
-                    <div className="relative h-40 w-full bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center overflow-hidden">
-                      <span className="text-5xl group-hover:scale-110 transition">{cat.image}</span>
+                    <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
+                      <Image
+                        src={cat.image}
+                        alt={cat.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition duration-500"
+                      />
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-slate-900 text-sm">{cat.name}</h3>
