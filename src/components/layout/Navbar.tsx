@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAddressStore } from "@/lib/addressStore";
+import AddressModal from "./AddressModal";
 import {
   ChevronDown,
   Heart,
@@ -102,15 +104,35 @@ function CategoryNavigation({ mobile = false }: { mobile?: boolean }) {
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { addresses, selectedAddressId, setModalOpen, loadAddresses } = useAddressStore();
+
+  useEffect(() => {
+    loadAddresses();
+  }, []);
+
+  const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
+  const locationLabel = selectedAddress
+    ? `${selectedAddress.type}: ${selectedAddress.area || selectedAddress.city}`
+    : "Hyderabad, TS";
+  const truncatedLabel = locationLabel.length > 22 ? locationLabel.slice(0, 20) + "..." : locationLabel;
 
   return (
     <header className="sticky top-0 z-50 w-full">
       <div className="bg-black text-white shadow-[0_3px_14px_rgba(0,0,0,0.3)]">
         <div className="mx-auto hidden h-20 max-w-[1440px] items-center gap-7 px-8 lg:flex">
           <Link href="/" className="shrink-0 font-serif text-5xl leading-none tracking-tight text-amber-400 transition hover:text-amber-300" aria-label="Oz home">Oz</Link>
-          <button className="flex shrink-0 items-center gap-2 rounded-lg px-2 py-2 text-left transition hover:bg-white/10" aria-label="Select delivery location">
+          <button
+            onClick={() => setModalOpen(true)}
+            className="flex shrink-0 items-center gap-2 rounded-lg px-2 py-2 text-left transition hover:bg-white/10"
+            aria-label="Select delivery location"
+          >
             <MapPin size={17} className="text-amber-400" />
-            <span><span className="block text-[10px] leading-3 text-zinc-400">Deliver to</span><span className="flex items-center gap-1 text-xs font-semibold">Hyderabad, TS <ChevronDown size={13} /></span></span>
+            <span>
+              <span className="block text-[10px] leading-3 text-zinc-400 font-medium">Deliver to</span>
+              <span className="flex items-center gap-1 text-xs font-bold tracking-wide">
+                {truncatedLabel} <ChevronDown size={13} className="text-amber-400" />
+              </span>
+            </span>
           </button>
           <div className="min-w-0 flex-1"><SearchBar /></div>
           <div className="flex shrink-0 items-center gap-3 xl:gap-5">
@@ -129,10 +151,23 @@ export default function Navbar() {
             <Link href="/cart" className="relative rounded-lg p-2 text-zinc-100" aria-label="Cart"><ShoppingCart size={22} /><span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[9px] font-bold text-black">3</span></Link>
           </div>
           <div className="mt-3"><SearchBar compact /></div>
+
+          {/* Mobile Location Selector Bar */}
+          <div className="mt-3 flex items-center justify-between border-t border-zinc-800/80 pt-2.5">
+            <button
+              onClick={() => setModalOpen(true)}
+              className="flex items-center gap-1.5 text-xs text-zinc-300 font-semibold hover:text-white transition"
+            >
+              <MapPin size={14} className="text-amber-400" />
+              <span>Deliver to: <span className="text-white font-bold">{truncatedLabel}</span></span>
+              <ChevronDown size={11} className="text-zinc-500" />
+            </button>
+          </div>
         </div>
         {isMenuOpen && <CategoryNavigation mobile />}
       </div>
       <CategoryNavigation />
+      <AddressModal />
     </header>
   );
 }

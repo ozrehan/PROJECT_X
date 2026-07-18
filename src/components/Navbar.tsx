@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect } from "react";
+import { useAddressStore } from "@/lib/addressStore";
+import AddressModal from "./layout/AddressModal";
 import {
   Heart,
   User,
@@ -10,6 +13,18 @@ import {
 } from "lucide-react";
 
 export default function Navbar() {
+  const { addresses, selectedAddressId, setModalOpen, loadAddresses } = useAddressStore();
+
+  useEffect(() => {
+    loadAddresses();
+  }, []);
+
+  const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
+  const locationLabel = selectedAddress
+    ? `${selectedAddress.type}: ${selectedAddress.area || selectedAddress.city}`
+    : "Hyderabad, TS";
+  const truncatedLabel = locationLabel.length > 22 ? locationLabel.slice(0, 20) + "..." : locationLabel;
+
   return (
     <>
       {/* TOP NAVBAR */}
@@ -26,7 +41,10 @@ export default function Navbar() {
 
         {/* LOCATION */}
 
-        <div className="ml-4 text-white">
+        <button
+          onClick={() => setModalOpen(true)}
+          className="ml-4 text-white text-left transition hover:opacity-85 outline-none"
+        >
           <p className="text-[12px] text-gray-300">
             Deliver to
           </p>
@@ -38,14 +56,14 @@ export default function Navbar() {
             />
 
             <span className="text-[15px] font-medium">
-              Hyderabad, TS
+              {truncatedLabel}
             </span>
 
-            <span className="text-xs">
+            <span className="text-xs text-zinc-400">
               ▼
             </span>
           </div>
-        </div>
+        </button>
 
         {/* SEARCH */}
 
@@ -126,6 +144,7 @@ export default function Navbar() {
         <Link href="/categories/offers" className="hover:text-[#D9A441] transition">Offers</Link>
 
       </div>
+      <AddressModal />
     </>
   );
 }
