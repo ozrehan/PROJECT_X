@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Heart, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { useWishlistStore } from "@/lib/wishlistStore";
+import { masterProducts } from "@/lib/products";
 
 const images = [
   "/images/products/shirt.jpeg",
@@ -13,6 +15,13 @@ const images = [
 
 export default function ProductGallery() {
   const [selected, setSelected] = useState(0);
+  const { toggleWishlist, inWishlist, loadWishlist } = useWishlistStore();
+
+  useEffect(() => {
+    loadWishlist();
+  }, []);
+
+  const product = masterProducts.find((p) => p.id === 3) || masterProducts[0];
 
   const showNext = () => setSelected((prev) => (prev + 1) % images.length);
   const showPrev = () =>
@@ -27,10 +36,13 @@ export default function ProductGallery() {
         </div>
 
         <button
-          aria-label="Add to wishlist"
-          className="absolute right-3 top-3 z-10 rounded-full bg-white/90 p-2 shadow-lg backdrop-blur transition hover:scale-105"
+          aria-label={inWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+          onClick={() => toggleWishlist(product)}
+          className={`absolute right-3 top-3 z-10 rounded-full p-2 shadow-lg backdrop-blur transition hover:scale-105 active:scale-95 ${
+            inWishlist(product.id) ? "bg-white text-rose-600 animate-pulse" : "bg-white/90 text-slate-700 hover:text-rose-600"
+          }`}
         >
-          <Heart size={18} className="text-slate-700" />
+          <Heart size={18} fill={inWishlist(product.id) ? "red" : "none"} />
         </button>
 
         <button

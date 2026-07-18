@@ -4,7 +4,8 @@ import Image from "next/image";
 import { Heart, Truck, Sparkles, BadgeCheck } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useWishlistStore } from "@/lib/wishlistStore";
 
 const products = [
   {
@@ -132,17 +133,15 @@ const products = [
 export default function ProductResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "black shirt";
-  const [wishlist, setWishlist] = useState<number[]>([]);
+  const { wishlistItems, toggleWishlist, loadWishlist, inWishlist } = useWishlistStore();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
   const totalProducts = 1248;
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
-  const toggleWishlist = (id: number) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
+  useEffect(() => {
+    loadWishlist();
+  }, []);
 
   return (
     <main className="flex-1">
@@ -202,12 +201,20 @@ export default function ProductResults() {
                 <button
                   onClick={(e) => {
                     e.preventDefault();
-                    toggleWishlist(product.id);
+                    const mappedProduct = {
+                      ...product,
+                      store: product.subtitle || "Fashion Hub",
+                      sizes: ['S', 'M', 'L', 'XL'],
+                      colors: ['Black'],
+                      deliveryEstimate: 'Delivery Today',
+                      stockStatus: 'In Stock' as const
+                    };
+                    toggleWishlist(mappedProduct);
                   }}
-                  aria-label={wishlist.includes(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
-                  className={`absolute right-4 top-4 z-10 rounded-full border border-slate-200 bg-white p-2 shadow-sm transition ${wishlist.includes(product.id) ? 'text-rose-600' : 'text-slate-500 hover:text-rose-600'}`}
+                  aria-label={inWishlist(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                  className={`absolute right-4 top-4 z-10 rounded-full border border-slate-200 bg-white p-2 shadow-sm transition ${inWishlist(product.id) ? 'text-rose-600' : 'text-slate-500 hover:text-rose-600'}`}
                 >
-                  <Heart size={18} fill={wishlist.includes(product.id) ? 'red' : 'none'} />
+                  <Heart size={18} fill={inWishlist(product.id) ? 'red' : 'none'} />
                 </button>
                 <div className="relative h-72 w-full p-6">
                   <Image

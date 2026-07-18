@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useAddressStore } from "@/lib/addressStore";
 import AddressModal from "./layout/AddressModal";
+import { useWishlistStore } from "@/lib/wishlistStore";
 import {
   Heart,
   User,
@@ -14,9 +15,11 @@ import {
 
 export default function Navbar() {
   const { addresses, selectedAddressId, setModalOpen, loadAddresses } = useAddressStore();
+  const { wishlistItems, loadWishlist } = useWishlistStore();
 
   useEffect(() => {
     loadAddresses();
+    loadWishlist();
   }, []);
 
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
@@ -100,7 +103,14 @@ export default function Navbar() {
         <div className="flex items-center gap-14 ml-auto">
 
           <Link href="/wishlist" className="flex flex-col items-center text-white cursor-pointer hover:text-[#D9A441] transition">
-            <Heart size={24} />
+            <span className="relative">
+              <Heart size={24} />
+              {wishlistItems.length > 0 && (
+                <span className="absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-black animate-scaleIn">
+                  {wishlistItems.length}
+                </span>
+              )}
+            </span>
             <span className="text-[13px] mt-1">
               Wishlist
             </span>

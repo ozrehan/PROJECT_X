@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAddressStore } from "@/lib/addressStore";
 import AddressModal from "./AddressModal";
+import { useWishlistStore } from "@/lib/wishlistStore";
 import {
   ChevronDown,
   Heart,
@@ -28,10 +29,10 @@ const categories = [
 type ActionButtonProps = {
   label: string;
   children: React.ReactNode;
-  badge?: boolean;
+  badgeCount?: number;
 };
 
-function ActionButton({ label, children, badge }: ActionButtonProps) {
+function ActionButton({ label, children, badgeCount }: ActionButtonProps) {
   return (
     <Link
       href={label === "Cart" ? "/cart" : label === "Wishlist" ? "/wishlist" : "/login"}
@@ -40,9 +41,9 @@ function ActionButton({ label, children, badge }: ActionButtonProps) {
     >
       <span className="relative text-zinc-100 transition group-hover:text-amber-400">
         {children}
-        {badge && (
-          <span className="absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-black">
-            3
+        {badgeCount !== undefined && badgeCount > 0 && (
+          <span className="absolute -right-3 -top-2 flex h-5 min-w-5 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] font-bold text-black animate-scaleIn">
+            {badgeCount}
           </span>
         )}
       </span>
@@ -105,9 +106,11 @@ function CategoryNavigation({ mobile = false }: { mobile?: boolean }) {
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { addresses, selectedAddressId, setModalOpen, loadAddresses } = useAddressStore();
+  const { wishlistItems, loadWishlist } = useWishlistStore();
 
   useEffect(() => {
     loadAddresses();
+    loadWishlist();
   }, []);
 
   const selectedAddress = addresses.find((a) => a.id === selectedAddressId);
@@ -136,9 +139,11 @@ export default function Navbar() {
           </button>
           <div className="min-w-0 flex-1"><SearchBar /></div>
           <div className="flex shrink-0 items-center gap-3 xl:gap-5">
-            <ActionButton label="Wishlist"><Heart size={24} /></ActionButton>
+            <ActionButton label="Wishlist" badgeCount={wishlistItems.length}>
+              <Heart size={24} />
+            </ActionButton>
             <ActionButton label="Account"><UserRound size={24} /></ActionButton>
-            <ActionButton label="Cart" badge><ShoppingCart size={24} /></ActionButton>
+            <ActionButton label="Cart" badgeCount={3}><ShoppingCart size={24} /></ActionButton>
           </div>
         </div>
 

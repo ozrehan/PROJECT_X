@@ -3,6 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { useEffect } from "react";
+import { useWishlistStore } from "@/lib/wishlistStore";
+import { masterProducts } from "@/lib/products";
 
 const products = [
   {
@@ -62,6 +65,12 @@ const products = [
 ];
 
 export default function BestSellers() {
+  const { toggleWishlist, inWishlist, loadWishlist } = useWishlistStore();
+
+  useEffect(() => {
+    loadWishlist();
+  }, []);
+
   return (
     <section className="max-w-7xl mx-auto px-4 py-10">
 
@@ -77,18 +86,43 @@ export default function BestSellers() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
 
-        {products.map((product) => (
-          <Link
-            href={`/search?q=${encodeURIComponent(product.name)}`}
-            key={product.name}
-            className="group cursor-pointer block"
-          >
+        {products.map((product, index) => {
+          const masterProduct = masterProducts.find((p) => p.name === product.name) || {
+            id: 300 + index,
+            name: product.name,
+            store: product.store,
+            price: Number(product.price),
+            oldPrice: Number(product.oldPrice || product.price),
+            discount: product.discount || "30% OFF",
+            rating: Number(product.rating || 4.5),
+            reviews: 120,
+            labels: ["Best Seller"],
+            image: product.image,
+            sizes: ["S", "M", "L", "XL"],
+            colors: ["Black"],
+            deliveryEstimate: "Delivery Today",
+            stockStatus: "In Stock" as const
+          };
 
-            <div className="bg-gray-50 rounded-2xl p-4 relative">
-
-              <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow" onClick={(e) => e.preventDefault()}>
-                <Heart size={16} />
-              </button>
+          return (
+            <Link
+              href={`/search?q=${encodeURIComponent(product.name)}`}
+              key={product.name}
+              className="group cursor-pointer block"
+            >
+              <div className="bg-gray-50 rounded-2xl p-4 relative">
+                <button
+                  className={`absolute top-3 right-3 bg-white p-2 rounded-full shadow transition active:scale-95 z-10 ${
+                    inWishlist(masterProduct.id) ? "text-rose-600 animate-pulse" : "text-slate-500 hover:text-rose-600"
+                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleWishlist(masterProduct);
+                  }}
+                >
+                  <Heart size={16} fill={inWishlist(masterProduct.id) ? "red" : "none"} />
+                </button>
 
               <div className="h-64 flex items-center justify-center">
 
@@ -130,8 +164,9 @@ export default function BestSellers() {
               ⭐ {product.rating}
             </p>
 
-          </Link>
-        ))}
+            </Link>
+          );
+        })}
 
       </div>
 
