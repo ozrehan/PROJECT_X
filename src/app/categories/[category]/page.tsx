@@ -38,11 +38,12 @@ const shopByOptions = [
 ];
 
 interface CategoryPageProps {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const categoryName = params.category
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { category } = await params;
+  const categoryName = category
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
