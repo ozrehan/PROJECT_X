@@ -1,4 +1,18 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect } from "react";
+import { useWishlistStore } from "@/lib/wishlistStore";
+import { useAddressStore } from "@/lib/addressStore";
+
 export default function ProfilePage() {
+  const { wishlistItems, loadWishlist } = useWishlistStore();
+  const { setModalOpen } = useAddressStore();
+
+  useEffect(() => {
+    loadWishlist();
+  }, []);
+
   return (
     <div className="w-full px-3 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8">
       <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8">
@@ -22,10 +36,10 @@ export default function ProfilePage() {
             <p className="text-gray-600 text-xs sm:text-sm mb-2">Total Orders</p>
             <h3 className="text-2xl sm:text-3xl font-bold">12</h3>
           </div>
-          <div className="border rounded-lg sm:rounded-xl p-4 sm:p-6">
+          <Link href="/wishlist" className="border rounded-lg sm:rounded-xl p-4 sm:p-6 hover:border-black transition block">
             <p className="text-gray-600 text-xs sm:text-sm mb-2">Wishlist Items</p>
-            <h3 className="text-2xl sm:text-3xl font-bold">8</h3>
-          </div>
+            <h3 className="text-2xl sm:text-3xl font-bold">{wishlistItems.length}</h3>
+          </Link>
           <div className="border rounded-lg sm:rounded-xl p-4 sm:p-6">
             <p className="text-gray-600 text-xs sm:text-sm mb-2">Loyalty Points</p>
             <h3 className="text-2xl sm:text-3xl font-bold">450</h3>
@@ -41,7 +55,10 @@ export default function ProfilePage() {
       <div className="mt-6 sm:mt-8 border-t pt-6 sm:pt-8">
         <h2 className="text-lg sm:text-xl font-bold mb-4">Settings</h2>
         <div className="space-y-2">
-          <button className="w-full text-left p-3 sm:p-4 border rounded-lg hover:bg-gray-50 transition text-sm sm:text-base">
+          <button 
+            onClick={() => setModalOpen(true)}
+            className="w-full text-left p-3 sm:p-4 border rounded-lg hover:bg-gray-50 transition text-sm sm:text-base"
+          >
             📍 Manage Addresses
           </button>
           <button className="w-full text-left p-3 sm:p-4 border rounded-lg hover:bg-gray-50 transition text-sm sm:text-base">
