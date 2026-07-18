@@ -34,10 +34,14 @@ import {
   TrendingUp,
   Zap,
   Mail,
-  RotateCcw
+  RotateCcw,
+  FileCheck,
+  Building2,
+  FileText,
+  Shield
 } from "lucide-react";
 
-export default function SellerOrders() {
+export default function AdminOrders() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("All Status");
@@ -47,32 +51,33 @@ export default function SellerOrders() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", path: "/seller" },
-    { icon: Package, label: "Products", path: "/seller/products" },
-    { icon: ShoppingCart, label: "Orders", path: "/seller/orders", active: true },
-    { icon: Box, label: "Inventory", path: "/seller/inventory" },
-    { icon: DollarSign, label: "Revenue", path: "/seller/revenue" },
-    { icon: Users, label: "Customers", path: "/seller/customers" },
-    { icon: Star, label: "Reviews", path: "/seller/reviews" },
-    { icon: Megaphone, label: "Marketing", path: "/seller/marketing" },
-    { icon: Settings, label: "Store Settings", path: "/seller/settings" },
-    { icon: CreditCard, label: "Payouts", path: "/seller/payouts" },
+    { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
+    { icon: FileCheck, label: "Store Approvals", path: "/admin/store-approval" },
+    { icon: Store, label: "Stores", path: "/admin/stores" },
+    { icon: Users, label: "Customers", path: "/admin/customers" },
+    { icon: ShoppingCart, label: "Orders", path: "/admin/orders", active: true },
+    { icon: Package, label: "Products", path: "/admin/products" },
+    { icon: Building2, label: "Categories", path: "/admin/categories" },
+    { icon: CreditCard, label: "Payments", path: "/admin/payments" },
+    { icon: DollarSign, label: "Revenue", path: "/admin/revenue" },
+    { icon: FileText, label: "Reports", path: "/admin/reports" },
+    { icon: Settings, label: "Settings", path: "/admin/settings" },
     { icon: LogOut, label: "Logout", path: "/logout" }
   ];
 
   const stats = [
     {
       icon: PackageIcon,
-      value: "256",
+      value: "1,256",
       label: "Total Orders",
-      description: "All time orders",
+      description: "All marketplace orders",
       color: "blue",
       bgColor: "bg-blue-100",
       iconColor: "text-blue-600"
     },
     {
       icon: Clock,
-      value: "18",
+      value: "118",
       label: "Pending Orders",
       description: "Awaiting processing",
       color: "orange",
@@ -81,7 +86,7 @@ export default function SellerOrders() {
     },
     {
       icon: Truck,
-      value: "152",
+      value: "652",
       label: "Shipped Orders",
       description: "In transit",
       color: "purple",
@@ -90,7 +95,7 @@ export default function SellerOrders() {
     },
     {
       icon: CheckCircle,
-      value: "86",
+      value: "486",
       label: "Delivered Orders",
       description: "Successfully delivered",
       color: "green",
@@ -98,13 +103,13 @@ export default function SellerOrders() {
       iconColor: "text-green-600"
     },
     {
-      icon: XCircle,
-      value: "12",
-      label: "Cancelled Orders",
-      description: "Order cancellations",
-      color: "red",
-      bgColor: "bg-red-100",
-      iconColor: "text-red-600"
+      icon: DollarSign,
+      value: "₹12.5L",
+      label: "Total Revenue",
+      description: "This month",
+      color: "green",
+      bgColor: "bg-green-100",
+      iconColor: "text-green-600"
     }
   ];
 
@@ -116,6 +121,7 @@ export default function SellerOrders() {
         email: "amit.sharma@gmail.com",
         avatar: "https://i.pravatar.cc/150?img=1"
       },
+      store: "Fashion Hub",
       date: "May 10, 2025",
       items: [
         { name: "Premium Black Shirt", quantity: 2, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=60&h=60&fit=crop" },
@@ -133,6 +139,7 @@ export default function SellerOrders() {
         email: "priya.patel@yahoo.com",
         avatar: "https://i.pravatar.cc/150?img=5"
       },
+      store: "TechZone Electronics",
       date: "May 9, 2025",
       items: [
         { name: "White Cotton Shirt", quantity: 1, image: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=60&h=60&fit=crop" }
@@ -149,6 +156,7 @@ export default function SellerOrders() {
         email: "rahul.mehta@hotmail.com",
         avatar: "https://i.pravatar.cc/150?img=3"
       },
+      store: "Fresh Grocery Store",
       date: "May 8, 2025",
       items: [
         { name: "Grey Hoodie", quantity: 2, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=60&h=60&fit=crop" },
@@ -166,6 +174,7 @@ export default function SellerOrders() {
         email: "neha.singh@gmail.com",
         avatar: "https://i.pravatar.cc/150?img=9"
       },
+      store: "Beauty Paradise",
       date: "May 7, 2025",
       items: [
         { name: "Red Casual Shirt", quantity: 1, image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=60&h=60&fit=crop" }
@@ -182,6 +191,7 @@ export default function SellerOrders() {
         email: "vikram.rao@outlook.com",
         avatar: "https://i.pravatar.cc/150?img=8"
       },
+      store: "Home Decor Studio",
       date: "May 6, 2025",
       items: [
         { name: "Navy Blazer", quantity: 1, image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=60&h=60&fit=crop" },
@@ -226,24 +236,24 @@ export default function SellerOrders() {
 
   const features = [
     {
-      icon: Zap,
-      title: "Quick Processing",
-      description: "Process orders faster with automated workflows"
+      icon: TrendingUp,
+      title: "Marketplace Analytics",
+      description: "Track order trends across all stores"
     },
     {
-      icon: Mail,
-      title: "Email Notifications",
-      description: "Keep customers informed with automated updates"
+      icon: Store,
+      title: "Store Performance",
+      description: "Monitor individual store metrics"
     },
     {
-      icon: Truck,
-      title: "Order Tracking",
-      description: "Real-time tracking for all shipments"
+      icon: Shield,
+      title: "Order Dispute Resolution",
+      description: "Handle customer complaints efficiently"
     },
     {
-      icon: RotateCcw,
-      title: "Easy Returns",
-      description: "Streamlined return process for better CX"
+      icon: FileText,
+      title: "Detailed Reports",
+      description: "Generate comprehensive order reports"
     }
   ];
 
@@ -253,7 +263,7 @@ export default function SellerOrders() {
       <nav className="h-[72px] bg-black flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-50">
         {/* Left side */}
         <div className="flex items-center gap-4">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white hover:text-orange-500 transition-colors">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white hover:text-blue-500 transition-colors">
             <Menu size={24} />
           </button>
           <div className="flex items-center gap-2">
@@ -262,8 +272,8 @@ export default function SellerOrders() {
             </div>
           </div>
           <div className="relative">
-            <button className="flex items-center gap-2 text-white hover:text-orange-500 transition-colors">
-              <span className="text-sm font-medium">My Store</span>
+            <button className="flex items-center gap-2 text-white hover:text-blue-500 transition-colors">
+              <span className="text-sm font-medium">Admin Panel</span>
               <ChevronDown size={16} />
             </button>
           </div>
@@ -275,7 +285,7 @@ export default function SellerOrders() {
             <input
               type="text"
               placeholder="Search products, orders, customers..."
-              className="w-full bg-gray-800 text-white placeholder-gray-400 rounded-lg py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              className="w-full bg-gray-800 text-white placeholder-gray-400 rounded-lg py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <Search className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
           </div>
@@ -283,17 +293,17 @@ export default function SellerOrders() {
 
         {/* Right side */}
         <div className="flex items-center gap-4">
-          <button className="relative text-white hover:text-orange-500 transition-colors">
+          <button className="relative text-white hover:text-blue-500 transition-colors">
             <Bell size={24} />
             <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
-              <span className="text-white font-semibold">RV</span>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+              <span className="text-white font-semibold">AD</span>
             </div>
             <div className="flex flex-col">
-              <span className="text-white text-sm font-medium">Rohan Verma</span>
-              <span className="text-gray-400 text-xs">Store Owner</span>
+              <span className="text-white text-sm font-medium">Admin User</span>
+              <span className="text-gray-400 text-xs">Super Admin</span>
             </div>
             <ChevronDown size={16} className="text-gray-400" />
           </div>
@@ -315,25 +325,25 @@ export default function SellerOrders() {
                   href={item.path}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
                     item.active
-                      ? "bg-orange-50 text-orange-600"
+                      ? "bg-blue-50 text-blue-600"
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
-                  <item.icon size={20} className={item.active ? "text-orange-600" : ""} />
+                  <item.icon size={20} className={item.active ? "text-blue-600" : ""} />
                   <span className="font-medium">{item.label}</span>
                 </a>
               ))}
             </nav>
 
             {/* Help card */}
-            <div className="mt-auto bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
+            <div className="mt-auto bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
               <div className="flex items-center gap-2 mb-3">
-                <HelpCircle className="text-orange-600" size={20} />
-                <span className="font-semibold text-gray-800">Need Help?</span>
+                <HelpCircle className="text-blue-600" size={20} />
+                <span className="font-semibold text-gray-800">Admin Support</span>
               </div>
-              <p className="text-sm text-gray-600 mb-3">Get support for your store</p>
-              <button className="w-full bg-orange-500 text-white py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-                Contact Support
+              <p className="text-sm text-gray-600 mb-3">Get admin assistance</p>
+              <button className="w-full bg-blue-500 text-white py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors">
+                Contact Admin Support
               </button>
             </div>
           </div>
@@ -341,9 +351,9 @@ export default function SellerOrders() {
 
         {/* Main Content */}
         <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-0"}`}>
-          <div className="p-8">
+          <div className="p-6 lg:p-8">
             {/* Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mb-6 lg:mb-8">
               {stats.map((stat, index) => (
                 <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <div className="flex items-start justify-between mb-4">
@@ -359,23 +369,23 @@ export default function SellerOrders() {
             </div>
 
             {/* Filter Toolbar */}
-            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-6">
+            <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 mb-4 lg:mb-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="relative flex-1 max-w-md">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     type="text"
-                    placeholder="Search orders by ID, customer, email..."
+                    placeholder="Search all marketplace orders by ID, customer, email..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
                 <div className="flex items-center gap-3 flex-wrap">
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   >
                     <option>All Status</option>
                     <option>Pending</option>
@@ -386,7 +396,7 @@ export default function SellerOrders() {
                   <select
                     value={paymentFilter}
                     onChange={(e) => setPaymentFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white"
+                    className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
                   >
                     <option>All Payment Methods</option>
                     <option>UPI</option>
@@ -411,7 +421,7 @@ export default function SellerOrders() {
             </div>
 
             {/* Orders Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-4 lg:mb-6">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -421,6 +431,9 @@ export default function SellerOrders() {
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Customer
+                      </th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Store
                       </th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                         Date
@@ -460,6 +473,9 @@ export default function SellerOrders() {
                               <p className="text-sm text-gray-500">{order.customer.email}</p>
                             </div>
                           </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className="font-medium text-gray-900">{order.store}</span>
                         </td>
                         <td className="px-6 py-4">
                           <span className="text-gray-600">{order.date}</span>
@@ -515,24 +531,24 @@ export default function SellerOrders() {
               {/* Pagination */}
               <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200">
                 <div className="text-sm text-gray-600">
-                  Showing 1 to 5 of 256 orders
+                  Showing 1 to 5 of 1,256 orders
                 </div>
                 <div className="flex items-center gap-2">
                   <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50">
                     <ChevronLeft size={20} />
                   </button>
-                  <button className="px-3 py-1 bg-orange-500 text-white rounded-lg">1</button>
+                  <button className="px-3 py-1 bg-blue-500 text-white rounded-lg">1</button>
                   <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">2</button>
                   <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">3</button>
                   <span className="px-2">...</span>
-                  <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">52</button>
+                  <button className="px-3 py-1 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">252</button>
                   <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                     <ChevronRight size={20} />
                   </button>
                   <select
                     value={itemsPerPage}
                     onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                    className="px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm"
+                    className="px-3 py-1 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-sm"
                   >
                     <option value={5}>5 / page</option>
                     <option value={10}>10 / page</option>
@@ -543,12 +559,12 @@ export default function SellerOrders() {
             </div>
 
             {/* Feature Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
               {features.map((feature, index) => (
                 <div key={index} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className="bg-orange-100 p-3 rounded-xl">
-                      <feature.icon size={24} className="text-orange-600" />
+                    <div className="bg-blue-100 p-3 rounded-xl">
+                      <feature.icon size={24} className="text-blue-600" />
                     </div>
                     <h3 className="font-semibold text-gray-900">{feature.title}</h3>
                   </div>

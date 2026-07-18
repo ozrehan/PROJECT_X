@@ -20,40 +20,58 @@ import {
   Phone,
   Mail,
   MapPin,
-  Star
+  Star,
+  Home,
+  User,
+  CreditCard,
+  BarChart3,
+  Boxes,
+  ShoppingBag,
+  Users as UsersIcon,
+  HelpCircle,
+  MessageSquare,
+  Gift,
+  Star as StarIcon,
+  RefreshCw,
+  FileText,
+  Archive
 } from "lucide-react";
 
 export default function StoreSettingsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   const menuItems = [
+    { icon: Home, label: "Home", path: "/" },
     { icon: LayoutDashboard, label: "Dashboard", path: "/seller/dashboard" },
     { icon: Package, label: "Products", path: "/seller/products" },
     { icon: ShoppingCart, label: "Orders", path: "/seller/orders" },
-    { icon: Store, label: "Store Settings", path: "/seller/settings", active: true },
     { icon: TrendingUp, label: "Analytics", path: "/seller/analytics" },
-    { icon: Settings, label: "Account Settings", path: "/seller/account" },
+    { icon: Store, label: "Store Settings", path: "/seller/settings", active: true },
+    { icon: MessageSquare, label: "Messages", path: "/seller/messages" },
+    { icon: Gift, label: "Promotions", path: "/seller/promotions" },
+    { icon: StarIcon, label: "Reviews", path: "/seller/reviews" },
+    { icon: CreditCard, label: "Payments", path: "/seller/payments" },
+    { icon: RefreshCw, label: "Returns", path: "/seller/returns" },
+    { icon: FileText, label: "Reports", path: "/seller/reports" },
+    { icon: Archive, label: "Inventory", path: "/seller/inventory" },
+    { icon: User, label: "Profile", path: "/seller/profile" },
+    { icon: HelpCircle, label: "Help", path: "/seller/help" },
     { icon: LogOut, label: "Logout", path: "/logout" }
   ];
 
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-gray-50">
       {/* Top Navbar */}
-      <nav className="h-[72px] bg-black flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-50">
+      <nav className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 fixed top-0 left-0 right-0 z-50">
         <div className="flex items-center gap-4">
-          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-white hover:text-orange-500 transition-colors">
+          <button onClick={() => setSidebarOpen(!sidebarOpen)} className="text-gray-600 hover:text-orange-500 transition-colors">
             <Menu size={24} />
           </button>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-lg">OZ</span>
             </div>
-          </div>
-          <div className="relative">
-            <button className="flex items-center gap-2 text-white hover:text-orange-500 transition-colors">
-              <span className="text-sm font-medium">Fashion Hub</span>
-              <ChevronDown size={16} />
-            </button>
+            <span className="text-xl font-bold text-gray-800">Marketplace</span>
           </div>
         </div>
 
@@ -63,12 +81,12 @@ export default function StoreSettingsPage() {
             <input
               type="text"
               placeholder="Search..."
-              className="pl-10 pr-4 py-2 bg-gray-800 text-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-64"
+              className="pl-10 pr-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 w-64"
             />
           </div>
-          <button className="text-white hover:text-orange-500 transition-colors relative">
+          <button className="text-gray-600 hover:text-orange-500 transition-colors relative">
             <Bell size={22} />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full text-xs flex items-center justify-center">3</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full text-xs flex items-center justify-center text-white">3</span>
           </button>
           <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-semibold">
             FH
@@ -77,7 +95,7 @@ export default function StoreSettingsPage() {
       </nav>
 
       {/* Sidebar */}
-      <aside className={`fixed left-0 top-[72px] bottom-0 bg-black z-40 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'}`}>
+      <aside className={`fixed left-0 top-16 bottom-0 bg-white z-40 transition-all duration-300 border-r border-gray-200 ${sidebarOpen ? 'w-64' : 'w-0 overflow-hidden'}`}>
         <div className="p-4">
           <nav className="space-y-1">
             {menuItems.map((item) => (
@@ -86,8 +104,8 @@ export default function StoreSettingsPage() {
                 href={item.path}
                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                   item.active
-                    ? 'bg-orange-500 text-white'
-                    : 'text-gray-300 hover:bg-gray-800 hover:text-white'
+                    ? 'bg-orange-50 text-orange-600 border border-orange-200'
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 <item.icon size={20} />
@@ -99,7 +117,7 @@ export default function StoreSettingsPage() {
       </aside>
 
       {/* Main Content */}
-      <main className={`pt-[72px] transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
+      <main className={`pt-16 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-0'}`}>
         <div className="p-8">
           {/* Page Header */}
           <div className="flex items-center justify-between mb-8">
@@ -118,7 +136,7 @@ export default function StoreSettingsPage() {
           {/* Store Settings Form */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Basic Information Section */}
-            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6">
+            <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-6 border border-gray-200">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
                 <span className="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700">
@@ -130,7 +148,7 @@ export default function StoreSettingsPage() {
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Store Logo</label>
                 <div className="flex items-center gap-4">
-                  <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                  <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border-2 border-dashed border-gray-300">
                     <Store size={40} className="text-gray-400" />
                   </div>
                   <div>
@@ -146,7 +164,7 @@ export default function StoreSettingsPage() {
               {/* Store Name */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Store Name</label>
-                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                   Fashion Hub
                 </div>
               </div>
@@ -154,7 +172,7 @@ export default function StoreSettingsPage() {
               {/* Store Type */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Store Type</label>
-                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                   Fashion
                 </div>
               </div>
@@ -162,14 +180,14 @@ export default function StoreSettingsPage() {
               {/* Description */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
-                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                   Premium fashion store offering trendy clothing and accessories for men and women.
                 </div>
               </div>
             </div>
 
             {/* Store Settings Section */}
-            <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Store Settings</h2>
 
               {/* Store URL */}
@@ -177,7 +195,7 @@ export default function StoreSettingsPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">Store URL</label>
                 <div className="flex items-center gap-2">
                   <span className="text-gray-500 text-sm">oz-marketplace.com/store/</span>
-                  <div className="flex-1 px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                  <div className="flex-1 px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                     fashion-hub
                   </div>
                 </div>
@@ -187,7 +205,7 @@ export default function StoreSettingsPage() {
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Commission Rate</label>
                 <div className="flex items-center gap-2">
-                  <div className="w-20 px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                  <div className="w-20 px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                     12
                   </div>
                   <span className="text-gray-500 text-sm">%</span>
@@ -197,7 +215,7 @@ export default function StoreSettingsPage() {
               {/* Store Status */}
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">Store Status</label>
-                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                   Active
                 </div>
               </div>
@@ -241,7 +259,7 @@ export default function StoreSettingsPage() {
             </div>
 
             {/* Contact Information Section */}
-            <div className="lg:col-span-3 bg-white rounded-xl shadow-sm p-6">
+            <div className="lg:col-span-3 bg-white rounded-xl shadow-sm p-6 border border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Contact Information</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -250,7 +268,7 @@ export default function StoreSettingsPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                    <div className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                    <div className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                       contact@fashionhub.com
                     </div>
                   </div>
@@ -261,7 +279,7 @@ export default function StoreSettingsPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                    <div className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                    <div className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                       +91 98765 43210
                     </div>
                   </div>
@@ -272,7 +290,7 @@ export default function StoreSettingsPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-                    <div className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                    <div className="w-full pl-10 pr-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                       123, MG Road
                     </div>
                   </div>
@@ -281,7 +299,7 @@ export default function StoreSettingsPage() {
                 {/* City */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                  <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                  <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                     Mumbai
                   </div>
                 </div>
@@ -289,7 +307,7 @@ export default function StoreSettingsPage() {
                 {/* State */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">State</label>
-                  <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                  <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                     Maharashtra
                   </div>
                 </div>
@@ -297,7 +315,7 @@ export default function StoreSettingsPage() {
                 {/* Pincode */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">Pincode</label>
-                  <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900">
+                  <div className="px-4 py-2 bg-gray-50 rounded-lg text-gray-900 border border-gray-200">
                     400001
                   </div>
                 </div>

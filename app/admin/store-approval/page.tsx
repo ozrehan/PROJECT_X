@@ -351,7 +351,7 @@ export default function StoreApprovalPage() {
         <aside
           className={`bg-white border-r border-gray-200 transition-all duration-300 ${
             sidebarOpen ? "w-64" : "w-0 overflow-hidden"
-          } fixed left-0 top-[72px] bottom-0 z-40`}
+          } fixed left-0 top-[72px] bottom-0 z-40 overflow-y-auto`}
         >
           <div className="h-full flex flex-col p-4">
             <nav className="flex-1 space-y-1">
