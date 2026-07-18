@@ -2,8 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronRight, Heart } from "lucide-react";
-import { useState } from "react";
+import { ChevronRight } from "lucide-react";
 
 const categories = [
   { name: "Men", icon: "👨" },
