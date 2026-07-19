@@ -1,31 +1,40 @@
 import { Clock3, Gift, MessageCircleMore, BadgeCheck } from "lucide-react";
+import { Product } from "@/lib/products";
 
-const perks = [
-  {
-    title: "Estimated delivery",
-    detail: "Today, 2-4 hours",
-    icon: Clock3,
-  },
-  {
-    title: "Exclusive offer",
-    detail: "Free shipping above ₹999",
-    icon: Gift,
-  },
-  {
-    title: "Trusted seller",
-    detail: "Verified by 12k happy buyers",
-    icon: BadgeCheck,
-  },
-];
+interface ProductSidebarProps {
+  product: Product;
+}
 
-export default function ProductSidebar() {
+export default function ProductSidebar({ product }: ProductSidebarProps) {
+  const perks = [
+    {
+      title: "Estimated delivery",
+      detail: product.deliveryEstimate || "Today, 2-4 hours",
+      icon: Clock3,
+    },
+    {
+      title: "Exclusive offer",
+      detail: "Free shipping above ₹999",
+      icon: Gift,
+    },
+    {
+      title: "Trusted seller",
+      detail: `Verified by ${product.store} customers`,
+      icon: BadgeCheck,
+    },
+  ];
+
   return (
     <aside className="rounded-[28px] border border-gray-200 bg-slate-950 p-5 text-white shadow-sm sm:p-6">
       <div className="rounded-2xl bg-white/10 p-4">
-        <p className="text-sm font-semibold text-amber-300">Limited stock</p>
-        <p className="mt-2 text-2xl font-semibold">Only 8 left</p>
+        <p className="text-sm font-semibold text-amber-300">Stock Status</p>
+        <p className="mt-2 text-2xl font-semibold">
+          {product.stockStatus === "In Stock" ? "In Stock" : product.stockStatus === "Low Stock" ? "Low Stock (Only 3 Left)" : "Out of Stock"}
+        </p>
         <p className="mt-2 text-sm text-slate-300">
-          Popular in this style. Order soon to avoid missing out.
+          {product.stockStatus === "Out of Stock" 
+            ? "This item is currently sold out. Check back soon." 
+            : "Popular in this style. Order soon to avoid missing out."}
         </p>
       </div>
 

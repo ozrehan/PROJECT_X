@@ -1,17 +1,27 @@
-const highlights = [
-  "Soft premium cotton for all-day comfort",
-  "Tailored fit with a modern clean finish",
-  "Easy to style with denim, trousers, or formal wear",
-];
+import { Product } from "@/lib/products";
 
-const specs = [
-  { label: "Fabric", value: "100% Cotton" },
-  { label: "Care", value: "Machine wash gentle" },
-  { label: "Fit", value: "Slim" },
-  { label: "Origin", value: "Made in India" },
-];
+interface ProductDescriptionProps {
+  product: Product;
+}
 
-export default function ProductDescription() {
+export default function ProductDescription({ product }: ProductDescriptionProps) {
+  const highlights = product.highlights && product.highlights.length > 0
+    ? product.highlights
+    : [
+        "Soft premium fabric for all-day comfort",
+        "Tailored fit with a modern clean finish",
+        "Easy to style with denim, trousers, or ethnic wear",
+      ];
+
+  const specs = product.specs && product.specs.length > 0
+    ? product.specs
+    : [
+        { label: "Fabric", value: "100% Cotton" },
+        { label: "Care", value: "Machine wash gentle" },
+        { label: "Fit", value: "Slim Fit" },
+        { label: "Origin", value: "Made in India" },
+      ];
+
   return (
     <section className="mt-8 rounded-[28px] border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
       <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
@@ -23,16 +33,13 @@ export default function ProductDescription() {
             Designed to feel effortless and premium
           </h2>
           <p className="mt-4 text-sm leading-7 text-slate-600 sm:text-[15px]">
-            This wardrobe staple combines clean tailoring with a soft hand feel,
-            making it suitable for office days, outings, and smart casual events.
-            The breathable fabric and refined finish ensure it looks polished from
-            morning to evening.
+            {product.description}
           </p>
 
           <ul className="mt-5 space-y-3">
             {highlights.map((item) => (
               <li key={item} className="flex items-start gap-2 text-sm text-slate-700">
-                <span className="mt-1 h-2.5 w-2.5 rounded-full bg-amber-500" />
+                <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-500" />
                 {item}
               </li>
             ))}

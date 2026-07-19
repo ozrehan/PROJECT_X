@@ -1,85 +1,135 @@
 import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import { masterProducts } from "@/lib/products";
 
-const featuredProducts = [
-  {
-    id: 1,
-    name: "Classic White Shirt",
-    price: "₹999",
-    image: "/images/products/shirt.jpeg",
-    tag: "Best seller",
-  },
-  {
-    id: 2,
-    name: "Soft Cotton Tee",
-    price: "₹699",
-    image: "/images/products/tshirt.jpeg",
-    tag: "Trending",
-  },
-  {
-    id: 3,
-    name: "Modern Jacket",
-    price: "₹1,799",
-    image: "/images/products/jacket.jpeg",
-    tag: "New",
-  },
-  {
-    id: 4,
-    name: "Elegant Kurta",
-    price: "₹1,499",
-    image: "/images/products/kurta.jpeg",
-    tag: "Premium",
-  },
-];
+interface ProductsPageProps {
+  searchParams: Promise<{
+    category?: string;
+    subcategory?: string;
+    q?: string;
+  }>;
+}
 
-export default function ProductsPage() {
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const { category, subcategory, q } = await searchParams;
+
+  let filtered = [...masterProducts];
+  let title = "Fashion Essentials";
+  let description = "Browse polished shirts, comfortable tees, and statement layers with a shopping experience that feels as smooth as your favorite app.";
+
+  if (category) {
+    filtered = filtered.filter(
+      (p) => p.category.toLowerCase() === category.toLowerCase()
+    );
+    title = category;
+    description = `Explore our curated selection of premium ${category.toLowerCase()}'s fashion and accessories.`;
+  }
+
+  if (subcategory) {
+    filtered = filtered.filter(
+      (p) => p.subcategory?.toLowerCase() === subcategory.toLowerCase()
+    );
+    title = `${subcategory}`;
+    description = `Premium ${subcategory.toLowerCase()} handpicked for quality, fit, and style.`;
+  }
+
+  if (q) {
+    filtered = filtered.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q.toLowerCase()) ||
+        p.store.toLowerCase().includes(q.toLowerCase()) ||
+        p.category.toLowerCase().includes(q.toLowerCase())
+    );
+    title = `Search results for "${q}"`;
+    description = `Found ${filtered.length} products matching your search criteria.`;
+  }
+
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-      <section className="overflow-hidden rounded-[32px] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-6 text-white shadow-xl sm:p-8 lg:p-10">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.24em] text-amber-300">
-            Clothing essentials
-          </p>
-          <h1 className="mt-3 text-3xl font-semibold sm:text-4xl">
-            Fresh styles for every day and every occasion.
-          </h1>
-          <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">
-            Browse polished shirts, comfortable tees, and statement layers with a
-            shopping experience that feels as smooth as your favorite app.
-          </p>
-        </div>
-      </section>
+    <>
+      <Navbar />
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {featuredProducts.map((product) => (
-          <article
-            key={product.id}
-            className="group overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
-          >
-            <div className="relative aspect-[4/5] overflow-hidden">
-              <span className="absolute left-3 top-3 z-10 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700">
-                {product.tag}
-              </span>
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 25vw"
-                className="object-cover transition duration-300 group-hover:scale-105"
-              />
-            </div>
+      <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <section className="overflow-hidden rounded-[32px] bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-6 text-white shadow-xl sm:p-8 lg:p-10">
+          <div className="max-w-2xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-amber-300">
+              {category || "Oz Catalog"}
+            </p>
+            <h1 className="mt-3 text-3xl font-bold sm:text-4xl capitalize">
+              {title}
+            </h1>
+            <p className="mt-3 text-sm leading-7 text-slate-300 sm:text-base">
+              {description}
+            </p>
+          </div>
+        </section>
 
-            <div className="p-4">
-              <h2 className="text-base font-semibold text-slate-900">{product.name}</h2>
-              <div className="mt-3 flex items-center justify-between">
-                <span className="text-sm font-semibold text-amber-600">{product.price}</span>
-                <button className="rounded-full bg-slate-900 px-3 py-1.5 text-sm font-semibold text-white">
-                  View
-                </button>
-              </div>
-            </div>
-          </article>
-        ))}
+        {filtered.length === 0 ? (
+          <div className="text-center py-20 bg-slate-50 rounded-[32px] mt-8 border border-dashed border-slate-200">
+            <span className="text-5xl">🔍</span>
+            <h2 className="text-xl font-bold text-slate-700 mt-4">No Products Found</h2>
+            <p className="text-slate-500 mt-2">Try clearing your filters or exploring our other sections.</p>
+            <Link href="/products" className="inline-block mt-6 bg-slate-950 text-white px-6 py-2.5 rounded-xl text-sm font-semibold">
+              Browse All Products
+            </Link>
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-6 grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+            {filtered.map((product) => {
+              const tag = product.labels[0] || "Trending";
+              return (
+                <article
+                  key={product.id}
+                  className="group overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl flex flex-col justify-between"
+                >
+                  <Link href={`/products/${product.id}`} className="block relative aspect-[4/5] overflow-hidden bg-slate-50">
+                    <span className="absolute left-3 top-3 z-10 rounded-full bg-white/95 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-700 shadow-sm">
+                      {tag}
+                    </span>
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      className="object-cover transition duration-300 group-hover:scale-105"
+                    />
+                  </Link>
+
+                  <div className="p-4 flex flex-col justify-between flex-grow">
+                    <div>
+                      <span className="text-xs text-slate-400 font-medium block mb-1">{product.store}</span>
+                      <h2 className="text-base font-bold text-slate-950 line-clamp-1 hover:text-amber-600 transition">
+                        <Link href={`/products/${product.id}`}>{product.name}</Link>
+                      </h2>
+                      
+                      <div className="mt-2 flex items-center gap-1 text-yellow-500 text-xs">
+                        <span>⭐ {product.rating}</span>
+                        <span className="text-slate-400">({product.reviews})</span>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 flex items-center justify-between border-t border-slate-50 pt-3">
+                      <div>
+                        <span className="text-lg font-extrabold text-slate-950">₹{product.price}</span>
+                        <span className="line-through text-slate-400 text-xs ml-2">₹{product.oldPrice}</span>
+                      </div>
+                      <Link
+                        href={`/products/${product.id}`}
+                        className="rounded-full bg-slate-950 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition"
+                      >
+                        View
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
       </div>
-    </div>
+
+      <Footer />
+    </>
   );
 }

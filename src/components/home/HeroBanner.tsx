@@ -10,8 +10,8 @@ import "swiper/css/pagination";
 
 export default function HeroBanner() {
   const banners = [
-    "/images/hero/hero-slide-2.png",
-    "/images/hero/hero-slide-3.png",
+    "https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&q=80&w=1600",
+    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1600",
   ];
 
   return (
