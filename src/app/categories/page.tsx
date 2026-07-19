@@ -60,19 +60,19 @@ export default function CategoriesPage() {
 
               <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">
                 {[
-                  { name: "T-Shirts", count: 980, image: "/images/products/tshirt.jpeg" },
-                  { name: "Shirts", count: 850, image: "/images/products/shirt.jpeg" },
-                  { name: "Jeans", count: 820, image: "/images/products/jeans.jpeg" },
-                  { name: "Trousers", count: 650, image: "/images/bestsellers/cargo-pant.jpeg" },
-                  { name: "Shorts", count: 420, image: "/images/bestsellers/cargo-pant.jpeg" },
-                  { name: "Jackets", count: 540, image: "/images/products/jacket.jpeg" },
-                  { name: "Hoodies & Sweatshirts", count: 610, image: "/images/bestsellers/hoodie.jpeg" },
-                  { name: "Blazers & Suits", count: 310, image: "/images/products/blazer.jpeg" },
-                  { name: "Sportswear", count: 560, image: "/images/products/tshirt.jpeg" },
-                  { name: "Ethnic Wear", count: 380, image: "/images/products/kurta.jpeg" },
-                  { name: "Innerwear & Sleepwear", count: 720, image: "/images/bestsellers/hoodie.jpeg" },
-                  { name: "Bags & Backpacks", count: 480, image: "/images/products/jacket.jpeg" },
-                  { name: "Sunglasses", count: 350, image: "/images/products/sunglasses.jpeg" },
+                  { name: "T-Shirts", count: 980, image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Shirts", count: 850, image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Jeans", count: 820, image: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Trousers", count: 650, image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Shorts", count: 420, image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Jackets", count: 540, image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Hoodies & Sweatshirts", count: 610, image: "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Blazers & Suits", count: 310, image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Sportswear", count: 560, image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Ethnic Wear", count: 380, image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Innerwear & Sleepwear", count: 720, image: "https://images.unsplash.com/photo-1544062612-421715494d48?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Bags & Backpacks", count: 480, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=400" },
+                  { name: "Sunglasses", count: 350, image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&q=80&w=400" },
                 ].map((cat) => (
                   <Link
                     key={cat.name}
@@ -84,6 +84,7 @@ export default function CategoriesPage() {
                         src={cat.image}
                         alt={cat.name}
                         fill
+                        sizes="(max-width: 768px) 50vw, 250px"
                         className="object-cover group-hover:scale-105 transition duration-500"
                       />
                     </div>

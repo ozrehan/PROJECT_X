@@ -6,7 +6,9 @@ import Footer from "@/components/layout/Footer";
 import Image from "next/image";
 import Link from "next/link";
 import { useWishlistStore } from "@/lib/wishlistStore";
+import { useCartStore } from "@/lib/cartStore";
 import { masterProducts, Product } from "@/lib/products";
+import { useRouter } from "next/navigation";
 import {
   Heart,
   ShoppingCart,
@@ -24,7 +26,9 @@ import {
 } from "lucide-react";
 
 export default function WishlistPage() {
+  const router = useRouter();
   const { wishlistItems, toggleWishlist, loadWishlist, clearWishlist } = useWishlistStore();
+  const addItem = useCartStore((state) => state.addItem);
 
   const [sortBy, setSortBy] = useState<"default" | "price-low" | "price-high" | "rating">("default");
   const [filterStore, setFilterStore] = useState<string>("all");
@@ -49,13 +53,35 @@ export default function WishlistPage() {
   };
 
   const handleMoveToCart = (product: Product) => {
-    // Simulate moving to cart
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      oldPrice: product.oldPrice,
+      discount: product.discount,
+      store: product.store,
+      image: product.image,
+      size: product.sizes[0] || "M",
+      color: product.colors[0] || "Black",
+    });
     toggleWishlist(product);
     triggerToast(`Moved "${product.name}" to cart successfully!`);
   };
 
   const handleBuyNow = (product: Product) => {
-    triggerToast(`Proceeding to checkout for "${product.name}"...`);
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      oldPrice: product.oldPrice,
+      discount: product.discount,
+      store: product.store,
+      image: product.image,
+      size: product.sizes[0] || "M",
+      color: product.colors[0] || "Black",
+    });
+    toggleWishlist(product);
+    router.push("/cart");
   };
 
   // Get unique stores for filter option
