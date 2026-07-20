@@ -114,7 +114,7 @@ export default function ProductResults() {
                 href={`/products/${product.id}`} 
                 className="group block overflow-hidden rounded-3xl border border-slate-200 bg-slate-50 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-200 flex flex-col justify-between"
               >
-                <div className="relative overflow-hidden bg-white aspect-[4/5]">
+                <div className="relative overflow-hidden bg-white aspect-[4/4.2]">
                   <div className="absolute left-4 top-4 flex flex-wrap gap-2 z-10">
                     {product.labels.map((label) => (
                       <span key={label} className="rounded-full bg-slate-900 px-3 py-1 text-[9px] font-bold uppercase tracking-wider text-white">
