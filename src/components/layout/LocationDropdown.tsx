@@ -6,12 +6,10 @@ import {
   MapPin,
   Compass,
   Plus,
-  Settings,
-  ChevronRight,
   Search,
   Loader2,
   X,
-  Zap,
+  Check,
 } from "lucide-react";
 
 interface LocationDropdownProps {
@@ -34,10 +32,11 @@ export default function LocationDropdown({
     isServiceable,
   } = useAddressStore();
 
-  const [searchQuery, setSearchQuery] = useState("");
+  const [pincodeInput, setPincodeInput] = useState("");
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
   const [locating, setLocating] = useState(false);
+  const [searchError, setSearchError] = useState("");
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
 
   // Close on outside click
@@ -76,8 +75,9 @@ export default function LocationDropdown({
 
   // Autocomplete location search
   useEffect(() => {
-    if (!searchQuery.trim()) {
+    if (!pincodeInput.trim()) {
       setSuggestions([]);
+      setSearchError("");
       return;
     }
 
@@ -85,10 +85,11 @@ export default function LocationDropdown({
 
     debounceTimer.current = setTimeout(async () => {
       setSearching(true);
+      setSearchError("");
       try {
         const res = await fetch(
           `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
-            searchQuery
+            pincodeInput
           )}&format=json&addressdetails=1&countrycodes=in&limit=4`
         );
         if (res.ok) {
@@ -105,11 +106,9 @@ export default function LocationDropdown({
     return () => {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
     };
-  }, [searchQuery]);
+  }, [pincodeInput]);
 
   if (!isOpen) return null;
-
-  const previewAddresses = addresses.slice(0, 3);
 
   const handleUseCurrentLocation = async () => {
     setLocating(true);
@@ -126,198 +125,155 @@ export default function LocationDropdown({
     onClose();
   };
 
-  const handleSuggestionSelect = (place: any) => {
+  const handleApplySearch = () => {
+    if (!pincodeInput.trim()) return;
+    // Open full modal to confirm or add details
     onOpenModal();
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-md p-0 sm:p-4 animate-fadeIn">
-      {/* Centered Popup Card on Desktop / Bottom Sheet on Mobile */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-fadeIn">
+      {/* Compact Location Modal Container matching Amazon layout but in OZ dark gold luxury aesthetic */}
       <div
         ref={popupRef}
         className={`
-          w-full max-w-[480px] bg-zinc-950 text-white border border-zinc-800/80 shadow-[0_25px_70px_rgba(0,0,0,0.85)]
-          /* Mobile Bottom Sheet */
-          rounded-t-[32px] max-h-[75vh] p-6 overflow-y-auto
-          /* Desktop Centered Popup */
-          sm:rounded-3xl sm:max-h-[85vh] sm:p-7 sm:overflow-visible
-          /* Animations */
-          transition-all duration-200 ease-out transform
-          animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-6 sm:slide-in-from-bottom-0
+          w-full max-w-[420px] rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-[0_25px_60px_rgba(0,0,0,0.9)]
+          p-6 transition-all duration-200 ease-out transform animate-in fade-in-0 zoom-in-95
         `}
       >
-        {/* Mobile Handle Indicator */}
-        <div className="mb-4 flex justify-center sm:hidden">
-          <div className="h-1.5 w-10 rounded-full bg-zinc-800" />
-        </div>
-
         {/* Header */}
-        <div className="flex items-start justify-between pb-4 border-b border-zinc-800/80">
+        <div className="flex items-start justify-between">
           <div>
-            <div className="flex items-center gap-2">
-              <MapPin size={20} className="text-amber-400" />
-              <h2 className="text-lg font-bold tracking-tight text-white font-serif">
-                Choose Delivery Location
-              </h2>
-            </div>
-            <p className="text-xs text-zinc-400 mt-1">
-              Select where you'd like your order delivered.
+            <h2 className="text-base font-bold text-white tracking-tight">
+              Choose your location
+            </h2>
+            <p className="text-xs text-zinc-400 mt-1 leading-snug">
+              Select a delivery location to see product availability and delivery options
             </p>
           </div>
           <button
             onClick={onClose}
-            className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white transition"
+            className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-900 hover:text-white transition"
             aria-label="Close popup"
           >
             <X size={18} />
           </button>
         </div>
 
-        {/* Saved Addresses Section (Top 3 max) */}
-        <div className="my-5 space-y-2.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 block px-1">
-            Saved Addresses ({addresses.length})
-          </span>
+        {/* Address Cards List */}
+        <div className="mt-4 space-y-2.5 max-h-[260px] overflow-y-auto pr-1 no-scrollbar">
+          {addresses.map((addr) => {
+            const isSelected = selectedAddressId === addr.id;
+            const fullAddressText = `${addr.flat}, ${addr.building ? addr.building + ", " : ""}${addr.street}, ${addr.area ? addr.area + ", " : ""}${addr.city} ${addr.pincode}`;
 
-          <div className="space-y-2">
-            {previewAddresses.map((addr) => {
-              const isSelected = selectedAddressId === addr.id;
-              const shortLocation = `${addr.area || addr.street || addr.building}, ${addr.city}`;
-              const fitsDelivery = isServiceable(addr.pincode, addr.city);
-
-              return (
-                <div
-                  key={addr.id}
-                  onClick={() => handleSelectAddress(addr.id)}
-                  className={`
-                    group flex items-center justify-between rounded-2xl border p-4 cursor-pointer transition-all duration-200
-                    ${
-                      isSelected
-                        ? "border-amber-400/80 bg-gradient-to-r from-amber-500/10 to-zinc-900/60 shadow-md shadow-amber-500/5"
-                        : "border-zinc-800/90 bg-zinc-900/40 hover:border-zinc-700 hover:bg-zinc-900 hover:-translate-y-0.5"
-                    }
-                  `}
-                >
-                  <div className="flex items-center gap-3.5 min-w-0 flex-1">
-                    {/* Radio Button */}
-                    <div
-                      className={`
-                        flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors
-                        ${
-                          isSelected
-                            ? "border-amber-400 bg-amber-400 text-black"
-                            : "border-zinc-600 group-hover:border-amber-400/60"
-                        }
-                      `}
-                    >
-                      {isSelected && <div className="h-2 w-2 rounded-full bg-black" />}
-                    </div>
-
-                    {/* Address Brief */}
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-white tracking-wide">
-                          {addr.type}
-                        </span>
-                        {addr.isDefault && (
-                          <span className="rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.2 text-[9px] font-semibold text-amber-400 uppercase">
-                            Default
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-xs text-zinc-400 truncate mt-0.5 font-medium">
-                        {shortLocation}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Delivery Badge */}
-                  {fitsDelivery && (
-                    <div className="flex items-center gap-1 shrink-0 text-[10px] font-semibold text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2.5 py-1 rounded-full ml-2">
-                      <Zap size={10} className="fill-emerald-400" />
-                      <span>One Day Delivery</span>
-                    </div>
+            return (
+              <div
+                key={addr.id}
+                onClick={() => handleSelectAddress(addr.id)}
+                className={`
+                  relative rounded-xl border p-3.5 text-left cursor-pointer transition-all duration-150
+                  ${
+                    isSelected
+                      ? "border-2 border-amber-400 bg-amber-500/10 shadow-sm"
+                      : "border border-zinc-800 bg-zinc-900/60 hover:border-zinc-700 hover:bg-zinc-900"
+                  }
+                `}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-xs font-bold text-white">
+                    {addr.name ? `${addr.name}` : `${addr.type}`}
+                    {addr.name && <span className="text-zinc-400 font-normal ml-1">({addr.type})</span>}
+                  </span>
+                  {isSelected && (
+                    <Check size={15} className="text-amber-400 shrink-0 mt-0.5" />
                   )}
                 </div>
-              );
-            })}
-          </div>
+
+                <p className="text-xs text-zinc-300 mt-1 leading-relaxed line-clamp-2">
+                  {fullAddressText}
+                </p>
+
+                {addr.isDefault && (
+                  <span className="text-[10px] text-amber-400 font-semibold block mt-1.5">
+                    Default address
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
 
-        {/* Quick Actions List Items */}
-        <div className="my-5 border-t border-b border-zinc-800/80 py-2.5 space-y-1">
-          {/* Action 1: Use Current Location */}
+        {/* Quick Action Links */}
+        <div className="mt-4 space-y-2 pt-2 text-xs">
+          <button
+            onClick={() => {
+              onOpenModal();
+              onClose();
+            }}
+            className="flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition"
+          >
+            <Plus size={14} /> Add an address or manage saved locations
+          </button>
+
           <button
             onClick={handleUseCurrentLocation}
             disabled={locating}
-            className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-900 hover:text-amber-400 transition group"
+            className="flex items-center gap-1.5 text-zinc-300 hover:text-amber-400 font-medium transition disabled:opacity-50"
           >
-            <div className="flex items-center gap-3">
-              {locating ? (
-                <Loader2 size={16} className="animate-spin text-amber-400" />
-              ) : (
-                <Compass size={16} className="text-amber-400 group-hover:scale-110 transition-transform" />
-              )}
-              <span>Use Current Location</span>
-            </div>
-            <ChevronRight size={14} className="text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
-          </button>
-
-          {/* Action 2: Add New Address */}
-          <button
-            onClick={() => {
-              onOpenModal();
-              onClose();
-            }}
-            className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-900 hover:text-amber-400 transition group"
-          >
-            <div className="flex items-center gap-3">
-              <Plus size={16} className="text-amber-400 group-hover:scale-110 transition-transform" />
-              <span>Add New Address</span>
-            </div>
-            <ChevronRight size={14} className="text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
-          </button>
-
-          {/* Action 3: Manage Addresses */}
-          <button
-            onClick={() => {
-              onOpenModal();
-              onClose();
-            }}
-            className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-900 hover:text-amber-400 transition group"
-          >
-            <div className="flex items-center gap-3">
-              <Settings size={16} className="text-amber-400 group-hover:scale-110 transition-transform" />
-              <span>Manage Addresses</span>
-            </div>
-            <ChevronRight size={14} className="text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+            {locating ? (
+              <Loader2 size={14} className="animate-spin text-amber-400" />
+            ) : (
+              <Compass size={14} className="text-amber-400" />
+            )}
+            <span>Use my current location (Detect via GPS)</span>
           </button>
         </div>
 
-        {/* Compact Search Box */}
-        <div className="relative mb-4">
-          <div className="flex items-center gap-2.5 rounded-2xl border border-zinc-800 bg-zinc-900/90 px-3.5 py-2.5 focus-within:border-amber-400 transition">
-            <Search size={15} className="text-zinc-500 shrink-0" />
-            <input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search area, street, landmark or pincode..."
-              className="w-full bg-transparent text-xs text-white outline-none placeholder:text-zinc-500"
-            />
-            {searching && <Loader2 size={14} className="animate-spin text-amber-400 shrink-0" />}
+        {/* Divider */}
+        <div className="relative my-4 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-zinc-800" />
+          </div>
+          <span className="relative bg-zinc-950 px-3 text-[11px] text-zinc-500">
+            or enter an Indian pincode
+          </span>
+        </div>
+
+        {/* Pincode / Locality Search Input + Apply Button */}
+        <div className="relative">
+          <div className="flex gap-2">
+            <div className="flex flex-1 items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 focus-within:border-amber-400 transition">
+              <Search size={14} className="text-zinc-500 shrink-0" />
+              <input
+                value={pincodeInput}
+                onChange={(e) => setPincodeInput(e.target.value)}
+                placeholder="Enter pincode or locality"
+                className="w-full bg-transparent text-xs text-white outline-none placeholder:text-zinc-500"
+              />
+              {searching && <Loader2 size={14} className="animate-spin text-amber-400 shrink-0" />}
+            </div>
+            <button
+              onClick={handleApplySearch}
+              className="rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-black hover:bg-amber-400 active:scale-95 transition"
+            >
+              Apply
+            </button>
           </div>
 
           {/* Autocomplete Suggestions */}
           {suggestions.length > 0 && (
-            <div className="absolute left-0 right-0 z-30 mt-1 max-h-48 overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-950 p-1.5 shadow-2xl space-y-1">
+            <div className="absolute left-0 right-0 z-30 mt-1.5 max-h-40 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950 p-1.5 shadow-2xl space-y-1">
               {suggestions.map((place) => (
                 <button
                   key={place.place_id}
-                  onClick={() => handleSuggestionSelect(place)}
-                  className="flex w-full items-start gap-2.5 rounded-xl p-2.5 text-left hover:bg-zinc-900 transition"
+                  onClick={() => {
+                    onOpenModal();
+                    onClose();
+                  }}
+                  className="flex w-full items-start gap-2 rounded-lg p-2 text-left hover:bg-zinc-900 transition"
                 >
-                  <MapPin size={14} className="mt-0.5 text-amber-400 shrink-0" />
+                  <MapPin size={13} className="mt-0.5 text-amber-400 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-white truncate">
                       {place.display_name.split(",")[0]}
@@ -330,20 +286,6 @@ export default function LocationDropdown({
               ))}
             </div>
           )}
-        </div>
-
-        {/* Footer Link */}
-        <div className="pt-2 text-center">
-          <button
-            onClick={() => {
-              onOpenModal();
-              onClose();
-            }}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 transition group"
-          >
-            <span>View All Saved Addresses</span>
-            <ChevronRight size={14} className="transition-transform group-hover:translate-x-1" />
-          </button>
         </div>
       </div>
     </div>
