@@ -1,6 +1,6 @@
 # OZ Marketplace 🛒
 
-e-commerce marketplace for fast delviery system and for efficient variety of clothing , last resort for fashion fast delivery fills the gap of stores and customer , which will help students or others to get there dress before time and can attend any event or shoping or any planning  .
+e-commerce marketplace for fast delviery system and for efficient variety of clothing , last resort for fashion fast delivery fills the gap of stores and customer , which will help students or others to get there dress before time and can attend any event or shoping or any planning mm.
 
 ## Getting Started
 
