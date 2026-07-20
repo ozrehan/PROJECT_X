@@ -1,6 +1,6 @@
 # OZ Marketplace 🛒
 
-A  e-commerce marketplace web application  for fast delviery system and for efficient variety of clothing , last resort for fashion fast delivery .
+A  e-commerce marketplace web application  for fast delviery system and for efficient variety of clothing , last resort for fashion fast delivery fills the gap of stores and customer.
 
 ## Getting Started
 
