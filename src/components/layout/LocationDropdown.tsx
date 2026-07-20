@@ -4,18 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAddressStore, Address } from "@/lib/addressStore";
 import {
   MapPin,
-  Home,
-  Briefcase,
-  Users,
-  BookOpen,
   Compass,
   Plus,
+  Settings,
   ChevronRight,
-  Check,
   Search,
   Loader2,
   X,
-  SlidersHorizontal,
   Zap,
 } from "lucide-react";
 
@@ -30,7 +25,7 @@ export default function LocationDropdown({
   onClose,
   onOpenModal,
 }: LocationDropdownProps) {
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
   const {
     addresses,
     selectedAddressId,
@@ -49,8 +44,8 @@ export default function LocationDropdown({
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
       ) {
         onClose();
       }
@@ -114,30 +109,13 @@ export default function LocationDropdown({
 
   if (!isOpen) return null;
 
-  const selectedAddress = addresses.find((a) => a.id === selectedAddressId) || addresses[0];
   const previewAddresses = addresses.slice(0, 3);
-
-  const getAddressIcon = (type: Address["type"]) => {
-    switch (type) {
-      case "Home":
-        return <Home size={15} />;
-      case "Work":
-        return <Briefcase size={15} />;
-      case "Parents":
-        return <Users size={15} />;
-      case "Hostel":
-        return <BookOpen size={15} />;
-      default:
-        return <MapPin size={15} />;
-    }
-  };
 
   const handleUseCurrentLocation = async () => {
     setLocating(true);
     const detected = await detectLocation();
     setLocating(false);
     if (detected) {
-      // Open modal in form mode with detected address or auto-select
       onOpenModal();
       onClose();
     }
@@ -149,185 +127,199 @@ export default function LocationDropdown({
   };
 
   const handleSuggestionSelect = (place: any) => {
-    // Open full modal for confirmation / complete details
     onOpenModal();
     onClose();
   };
 
   return (
-    <>
-      {/* Backdrop for Mobile */}
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/70 backdrop-blur-md p-0 sm:p-4 animate-fadeIn">
+      {/* Centered Popup Card on Desktop / Bottom Sheet on Mobile */}
       <div
-        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden animate-fadeIn"
-        onClick={onClose}
-      />
-
-      {/* Main Container - Desktop Floating Dropdown vs Mobile Bottom Sheet */}
-      <div
-        ref={dropdownRef}
+        ref={popupRef}
         className={`
-          z-50 border border-amber-500/20 bg-zinc-950 text-white shadow-[0_20px_60px_rgba(0,0,0,0.8)]
-          /* Desktop layout */
-          lg:absolute lg:top-full lg:left-0 lg:mt-3 lg:w-[460px] lg:rounded-2xl lg:p-5
+          w-full max-w-[480px] bg-zinc-950 text-white border border-zinc-800/80 shadow-[0_25px_70px_rgba(0,0,0,0.85)]
           /* Mobile Bottom Sheet */
-          fixed bottom-0 inset-x-0 max-h-[80vh] rounded-t-[28px] p-5 overflow-y-auto lg:overflow-visible
+          rounded-t-[32px] max-h-[75vh] p-6 overflow-y-auto
+          /* Desktop Centered Popup */
+          sm:rounded-3xl sm:max-h-[85vh] sm:p-7 sm:overflow-visible
           /* Animations */
           transition-all duration-200 ease-out transform
-          animate-in fade-in-0 zoom-in-95 lg:slide-in-from-top-2 slide-in-from-bottom-4
+          animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-6 sm:slide-in-from-bottom-0
         `}
       >
-        {/* Mobile Handle Bar */}
-        <div className="mb-3 flex justify-center lg:hidden">
-          <div className="h-1.5 w-12 rounded-full bg-zinc-800" />
+        {/* Mobile Handle Indicator */}
+        <div className="mb-4 flex justify-center sm:hidden">
+          <div className="h-1.5 w-10 rounded-full bg-zinc-800" />
         </div>
 
-        {/* Top Header */}
-        <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3 mb-4">
-          <div className="flex items-center gap-2">
-            <MapPin size={18} className="text-amber-400" />
-            <h3 className="text-sm font-bold uppercase tracking-wider text-amber-400">
-              Delivery Location
-            </h3>
+        {/* Header */}
+        <div className="flex items-start justify-between pb-4 border-b border-zinc-800/80">
+          <div>
+            <div className="flex items-center gap-2">
+              <MapPin size={20} className="text-amber-400" />
+              <h2 className="text-lg font-bold tracking-tight text-white font-serif">
+                Choose Delivery Location
+              </h2>
+            </div>
+            <p className="text-xs text-zinc-400 mt-1">
+              Select where you'd like your order delivered.
+            </p>
           </div>
           <button
             onClick={onClose}
-            className="rounded-full p-1 text-zinc-400 hover:bg-zinc-800 hover:text-white transition"
-            aria-label="Close delivery menu"
+            className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-900 hover:text-white transition"
+            aria-label="Close popup"
           >
-            <X size={16} />
+            <X size={18} />
           </button>
         </div>
 
-        {/* Selected Address Display Card */}
-        {selectedAddress && (
-          <div className="relative mb-4 overflow-hidden rounded-xl border border-amber-500/30 bg-gradient-to-r from-zinc-900 via-zinc-900/90 to-zinc-950 p-4 shadow-inner">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-500/10 text-amber-400">
-                  {getAddressIcon(selectedAddress.type)}
-                </span>
-                <span className="text-xs font-bold text-white uppercase tracking-wide">
-                  {selectedAddress.type} {selectedAddress.isDefault && <span className="text-amber-400">(Default)</span>}
-                </span>
-              </div>
-              <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                <Zap size={11} className="fill-emerald-400" /> One Day Delivery Available
-              </span>
-            </div>
+        {/* Saved Addresses Section (Top 3 max) */}
+        <div className="my-5 space-y-2.5">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-500 block px-1">
+            Saved Addresses ({addresses.length})
+          </span>
 
-            <p className="mt-2.5 text-xs text-zinc-300 font-medium leading-relaxed">
-              {selectedAddress.flat}, {selectedAddress.building ? `${selectedAddress.building}, ` : ""}
-              {selectedAddress.street}, {selectedAddress.area}
-            </p>
-            <p className="text-[11px] text-zinc-400 font-normal mt-0.5">
-              {selectedAddress.city} - {selectedAddress.pincode}
-            </p>
-          </div>
-        )}
-
-        {/* Saved Addresses Preview (First 2-3) */}
-        <div className="mb-4 space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-bold text-zinc-400 uppercase tracking-wider px-1">
-            <span>Select Address</span>
-            <span className="text-zinc-500">{addresses.length} saved</span>
-          </div>
-
-          <div className="space-y-2 max-h-[190px] overflow-y-auto pr-1 no-scrollbar">
+          <div className="space-y-2">
             {previewAddresses.map((addr) => {
               const isSelected = selectedAddressId === addr.id;
+              const shortLocation = `${addr.area || addr.street || addr.building}, ${addr.city}`;
+              const fitsDelivery = isServiceable(addr.pincode, addr.city);
+
               return (
                 <div
                   key={addr.id}
                   onClick={() => handleSelectAddress(addr.id)}
                   className={`
-                    group flex items-start gap-3 rounded-xl border p-3 cursor-pointer transition-all duration-150
+                    group flex items-center justify-between rounded-2xl border p-4 cursor-pointer transition-all duration-200
                     ${
                       isSelected
-                        ? "border-amber-400/70 bg-amber-500/10 text-white"
-                        : "border-zinc-800 bg-zinc-900/50 text-zinc-300 hover:border-zinc-700 hover:bg-zinc-900"
+                        ? "border-amber-400/80 bg-gradient-to-r from-amber-500/10 to-zinc-900/60 shadow-md shadow-amber-500/5"
+                        : "border-zinc-800/90 bg-zinc-900/40 hover:border-zinc-700 hover:bg-zinc-900 hover:-translate-y-0.5"
                     }
                   `}
                 >
-                  <div className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border border-zinc-500 group-hover:border-amber-400 transition">
-                    {isSelected && (
-                      <div className="h-2 w-2 rounded-full bg-amber-400" />
-                    )}
+                  <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                    {/* Radio Button */}
+                    <div
+                      className={`
+                        flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors
+                        ${
+                          isSelected
+                            ? "border-amber-400 bg-amber-400 text-black"
+                            : "border-zinc-600 group-hover:border-amber-400/60"
+                        }
+                      `}
+                    >
+                      {isSelected && <div className="h-2 w-2 rounded-full bg-black" />}
+                    </div>
+
+                    {/* Address Brief */}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-white tracking-wide">
+                          {addr.type}
+                        </span>
+                        {addr.isDefault && (
+                          <span className="rounded-full bg-amber-500/10 border border-amber-500/30 px-2 py-0.2 text-[9px] font-semibold text-amber-400 uppercase">
+                            Default
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-zinc-400 truncate mt-0.5 font-medium">
+                        {shortLocation}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                        {addr.type}
-                        {addr.isDefault && (
-                          <span className="text-[9px] text-amber-400 font-semibold">DEFAULT</span>
-                        )}
-                      </span>
-                      {isSelected && (
-                        <Check size={14} className="text-amber-400" />
-                      )}
+                  {/* Delivery Badge */}
+                  {fitsDelivery && (
+                    <div className="flex items-center gap-1 shrink-0 text-[10px] font-semibold text-emerald-400 bg-emerald-950/40 border border-emerald-500/20 px-2.5 py-1 rounded-full ml-2">
+                      <Zap size={10} className="fill-emerald-400" />
+                      <span>One Day Delivery</span>
                     </div>
-                    <p className="text-[11px] text-zinc-400 line-clamp-1 mt-0.5">
-                      {addr.flat}, {addr.street}, {addr.area || addr.city}
-                    </p>
-                  </div>
+                  )}
                 </div>
               );
             })}
           </div>
         </div>
 
-        {/* Quick Actions List */}
-        <div className="mb-4 grid grid-cols-2 gap-2">
+        {/* Quick Actions List Items */}
+        <div className="my-5 border-t border-b border-zinc-800/80 py-2.5 space-y-1">
+          {/* Action 1: Use Current Location */}
           <button
             onClick={handleUseCurrentLocation}
             disabled={locating}
-            className="flex items-center justify-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2.5 text-xs font-semibold text-zinc-200 transition hover:border-amber-500/50 hover:bg-zinc-800 active:scale-[0.98] disabled:opacity-50"
+            className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-900 hover:text-amber-400 transition group"
           >
-            {locating ? (
-              <Loader2 size={14} className="animate-spin text-amber-400" />
-            ) : (
-              <Compass size={14} className="text-amber-400" />
-            )}
-            <span>Current Location</span>
+            <div className="flex items-center gap-3">
+              {locating ? (
+                <Loader2 size={16} className="animate-spin text-amber-400" />
+              ) : (
+                <Compass size={16} className="text-amber-400 group-hover:scale-110 transition-transform" />
+              )}
+              <span>Use Current Location</span>
+            </div>
+            <ChevronRight size={14} className="text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
           </button>
 
+          {/* Action 2: Add New Address */}
           <button
             onClick={() => {
               onOpenModal();
               onClose();
             }}
-            className="flex items-center justify-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-xs font-bold text-amber-400 transition hover:bg-amber-500/20 active:scale-[0.98]"
+            className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-900 hover:text-amber-400 transition group"
           >
-            <Plus size={14} />
-            <span>Add New Address</span>
+            <div className="flex items-center gap-3">
+              <Plus size={16} className="text-amber-400 group-hover:scale-110 transition-transform" />
+              <span>Add New Address</span>
+            </div>
+            <ChevronRight size={14} className="text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+
+          {/* Action 3: Manage Addresses */}
+          <button
+            onClick={() => {
+              onOpenModal();
+              onClose();
+            }}
+            className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-zinc-200 hover:bg-zinc-900 hover:text-amber-400 transition group"
+          >
+            <div className="flex items-center gap-3">
+              <Settings size={16} className="text-amber-400 group-hover:scale-110 transition-transform" />
+              <span>Manage Addresses</span>
+            </div>
+            <ChevronRight size={14} className="text-zinc-600 group-hover:text-amber-400 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
 
-        {/* Search Address Field */}
+        {/* Compact Search Box */}
         <div className="relative mb-4">
-          <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2.5 focus-within:border-amber-400 transition">
+          <div className="flex items-center gap-2.5 rounded-2xl border border-zinc-800 bg-zinc-900/90 px-3.5 py-2.5 focus-within:border-amber-400 transition">
             <Search size={15} className="text-zinc-500 shrink-0" />
             <input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search locality, street, landmark or pincode..."
+              placeholder="Search area, street, landmark or pincode..."
               className="w-full bg-transparent text-xs text-white outline-none placeholder:text-zinc-500"
             />
             {searching && <Loader2 size={14} className="animate-spin text-amber-400 shrink-0" />}
           </div>
 
-          {/* Autocomplete Suggestions inside dropdown */}
+          {/* Autocomplete Suggestions */}
           {suggestions.length > 0 && (
-            <div className="absolute left-0 right-0 z-30 mt-1 max-h-48 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950 p-1.5 shadow-2xl space-y-1">
+            <div className="absolute left-0 right-0 z-30 mt-1 max-h-48 overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-950 p-1.5 shadow-2xl space-y-1">
               {suggestions.map((place) => (
                 <button
                   key={place.place_id}
                   onClick={() => handleSuggestionSelect(place)}
-                  className="flex w-full items-start gap-2.5 rounded-lg p-2 text-left hover:bg-zinc-900 transition"
+                  className="flex w-full items-start gap-2.5 rounded-xl p-2.5 text-left hover:bg-zinc-900 transition"
                 >
                   <MapPin size={14} className="mt-0.5 text-amber-400 shrink-0" />
                   <div>
-                    <p className="text-xs font-medium text-white truncate">
+                    <p className="text-xs font-semibold text-white truncate">
                       {place.display_name.split(",")[0]}
                     </p>
                     <p className="text-[10px] text-zinc-400 line-clamp-1">
@@ -340,21 +332,20 @@ export default function LocationDropdown({
           )}
         </div>
 
-        {/* Footer Link: View All / Manage Addresses */}
-        <div className="border-t border-zinc-800/80 pt-3 flex items-center justify-between">
+        {/* Footer Link */}
+        <div className="pt-2 text-center">
           <button
             onClick={() => {
               onOpenModal();
               onClose();
             }}
-            className="flex items-center gap-2 text-xs font-bold text-zinc-300 hover:text-amber-400 transition group"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 transition group"
           >
-            <SlidersHorizontal size={14} className="text-amber-400" />
-            <span>Manage All Addresses</span>
-            <ChevronRight size={14} className="transition group-hover:translate-x-1 text-amber-400" />
+            <span>View All Saved Addresses</span>
+            <ChevronRight size={14} className="transition-transform group-hover:translate-x-1" />
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
