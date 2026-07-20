@@ -1,6 +1,6 @@
 # OZ Marketplace 🛒
 
-A luxury fashion & e-commerce marketplace web application built with Next.js 16, React 19, TypeScript, and Tailwind CSS.
+A  e-commerce marketplace web application  for fast delviery system and for efficient variety of clothing , last resort for fashion fast delivery .
 
 ## Getting Started
 
