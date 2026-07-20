@@ -71,7 +71,7 @@ export default function ProductResults() {
         </div>
 
         <div className="mb-6 flex flex-wrap items-center gap-3 overflow-x-auto py-2">
-          {['All', 'Men', 'Women', 'Topwear', 'Shirts', 'T-Shirts', 'Ethnic Wear'].map((label, index) => {
+          {['All', 'Dresses', 'Kurtas', 'Sarees', 'Men', 'Women', 'Topwear', 'Shirts', 'T-Shirts', 'Ethnic Wear'].map((label, index) => {
             const isActive = label === 'All' && !query || query.toLowerCase() === label.toLowerCase();
             return (
               <Link 

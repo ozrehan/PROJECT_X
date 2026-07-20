@@ -562,5 +562,303 @@ export const masterProducts: Product[] = [
     galleryImages: [
       "https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&q=80&w=800"
     ]
+  },
+  {
+    id: 16,
+    name: "Emerald Silk Evening Dress",
+    store: "Miss Boutique",
+    subtitle: "Luxury Eveningwear",
+    price: 1499,
+    oldPrice: 2499,
+    discount: "40% OFF",
+    rating: 4.9,
+    reviews: 1840,
+    labels: ["Best Seller", "Hot Buy"],
+    image: "/images/products/dress.jpeg",
+    sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Emerald Green", "Midnight Blue"],
+    deliveryEstimate: "Delivery Today",
+    stockStatus: "In Stock",
+    category: "Women",
+    subcategory: "Dresses",
+    description: "Turn heads at any high-profile dinner or gala in this breathtaking emerald silk dress. Featuring a elegant fluid silhouette, empire waistline, and delicate strap details.",
+    highlights: [
+      "Pure Mulberry silk satin finish",
+      "Concealed back zip with hook-and-eye closure",
+      "Fluid flared hemline for effortless movement",
+      "Wrinkle-resistant luxury weave"
+    ],
+    specs: [
+      { label: "Fabric", value: "100% Silk Satin" },
+      { label: "Care Instructions", value: "Dry clean only" },
+      { label: "Fit Type", value: "Regular / Empire Waist" },
+      { label: "Occasion", value: "Gala / Evening Cocktail" }
+    ],
+    galleryImages: ["/images/products/dress.jpeg"]
+  },
+  {
+    id: 17,
+    name: "Vintage Designer Party Dress",
+    store: "Urban Tribe",
+    subtitle: "Chic Cocktail Style",
+    price: 1899,
+    oldPrice: 2999,
+    discount: "36% OFF",
+    rating: 4.8,
+    reviews: 1420,
+    labels: ["New Arrival", "Trending"],
+    image: "/images/products/dress-2.jpeg",
+    sizes: ["S", "M", "L"],
+    colors: ["Champagne Gold", "Classic Black"],
+    deliveryEstimate: "Delivery Today",
+    stockStatus: "In Stock",
+    category: "Women",
+    subcategory: "Dresses",
+    description: "Exude timeless elegance with this vintage-inspired designer party dress. Styled with soft draping and subtle shimmer accents, ideal for celebrations and evening parties.",
+    highlights: [
+      "Shimmer-infused premium stretch viscose",
+      "Flattering structured bodice",
+      "Fully lined for maximum comfort",
+      "Elegant knee-length flared cut"
+    ],
+    specs: [
+      { label: "Fabric", value: "Viscose Blend" },
+      { label: "Care Instructions", value: "Gentle hand wash cold" },
+      { label: "Fit Type", value: "Slim Fit Bodice" },
+      { label: "Occasion", value: "Party / Night Out" }
+    ],
+    galleryImages: ["/images/products/dress-2.jpeg"]
+  },
+  {
+    id: 18,
+    name: "Royale Designer Anarkali Kurta Dress",
+    store: "Ethnic Villa",
+    subtitle: "Festive Ethnic Collection",
+    price: 1299,
+    oldPrice: 1999,
+    discount: "35% OFF",
+    rating: 4.7,
+    reviews: 980,
+    labels: ["Ethnic Choice"],
+    image: "/images/products/kurta.jpeg",
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Royal Blue", "Maroon"],
+    deliveryEstimate: "Delivery Tomorrow",
+    stockStatus: "In Stock",
+    category: "Ethnic Wear",
+    subcategory: "Kurtas",
+    description: "Celebrate traditions in grandeur. Crafted with intricate zari embroidery on slub silk cotton, this flared Anarkali dress pairs elegance with comfort.",
+    highlights: [
+      "Intricate hand embroidery work",
+      "Breathable silk-cotton blend",
+      "Flared floor-length silhouette",
+      "Includes matching dupatta"
+    ],
+    specs: [
+      { label: "Fabric", value: "Silk Cotton Slub" },
+      { label: "Care Instructions", value: "Dry clean recommended" },
+      { label: "Fit Type", value: "Flared Anarkali" },
+      { label: "Occasion", value: "Wedding Guest / Festive" }
+    ],
+    galleryImages: ["/images/products/kurta.jpeg"]
+  },
+  {
+    id: 19,
+    name: "Silk Festive Kanjivaram Saree Dress",
+    store: "Ethnic Villa",
+    subtitle: "Traditional Heritage Wear",
+    price: 2499,
+    oldPrice: 3999,
+    discount: "37% OFF",
+    rating: 4.9,
+    reviews: 3100,
+    labels: ["Best Seller"],
+    image: "/images/bestsellers/saree.jpeg",
+    sizes: ["Free Size"],
+    colors: ["Purple Gold", "Red Gold"],
+    deliveryEstimate: "Delivery Today",
+    stockStatus: "In Stock",
+    category: "Ethnic Wear",
+    subcategory: "Sarees",
+    description: "Adorn yourself in timeless royal heritage. Pure handloom Kanjivaram silk saree featuring elaborate golden zari borders and rich pallu design.",
+    highlights: [
+      "Authentic handloom silk weave",
+      "Heavy golden zari pallu",
+      "Unstitched blouse piece included",
+      "Soft silky drape feel"
+    ],
+    specs: [
+      { label: "Fabric", value: "100% Pure Silk" },
+      { label: "Care Instructions", value: "Dry clean only" },
+      { label: "Length", value: "6.3 Meters with Blouse" },
+      { label: "Occasion", value: "Festive / Wedding / Bridal" }
+    ],
+    galleryImages: ["/images/bestsellers/saree.jpeg"]
+  },
+  {
+    id: 20,
+    name: "Handblock Cotton Printed Kurta Dress",
+    store: "Ethnic Villa",
+    subtitle: "Artisanal Casual Ethnic",
+    price: 1099,
+    oldPrice: 1699,
+    discount: "35% OFF",
+    rating: 4.6,
+    reviews: 870,
+    labels: ["New"],
+    image: "/images/bestsellers/cotton-kurta.jpeg",
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Mustard Yellow", "Olive Green"],
+    deliveryEstimate: "Delivery Tomorrow",
+    stockStatus: "In Stock",
+    category: "Ethnic Wear",
+    subcategory: "Kurtas",
+    description: "Stay effortless and graceful. Crafted with authentic Jaipur handblock prints on soft organic cotton fabric with side pocket convenience.",
+    highlights: [
+      "Authentic Jaipur block printing",
+      "100% breathable organic cotton",
+      "Deep side pockets",
+      "Mandarin collar band"
+    ],
+    specs: [
+      { label: "Fabric", value: "100% Organic Cotton" },
+      { label: "Care Instructions", value: "Hand wash cold separate" },
+      { label: "Fit Type", value: "Straight Fit" },
+      { label: "Occasion", value: "Casual Work / Daily Wear" }
+    ],
+    galleryImages: ["/images/bestsellers/cotton-kurta.jpeg"]
+  },
+  {
+    id: 21,
+    name: "Red Velvet Cocktail Gown Dress",
+    store: "Miss Boutique",
+    subtitle: "Glamorous Eveningwear",
+    price: 2199,
+    oldPrice: 3499,
+    discount: "37% OFF",
+    rating: 4.9,
+    reviews: 1250,
+    labels: ["Luxury"],
+    image: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800",
+    sizes: ["XS", "S", "M", "L"],
+    colors: ["Ruby Red", "Black Velvet"],
+    deliveryEstimate: "Delivery Today",
+    stockStatus: "In Stock",
+    category: "Women",
+    subcategory: "Dresses",
+    description: "A stunning velvet gown designed for grand entry moments. Features a subtle off-shoulder neckline and thigh-high slit.",
+    highlights: [
+      "Plush velvet stretch fabric",
+      "Off-shoulder sweetheart neckline",
+      "Thigh-high side slit detail",
+      "Fully lined interior"
+    ],
+    specs: [
+      { label: "Fabric", value: "90% Velvet, 10% Elastane" },
+      { label: "Care Instructions", value: "Dry clean only" },
+      { label: "Fit Type", value: "Bodycon Floor Length" },
+      { label: "Occasion", value: "Prom / Gala / Red Carpet" }
+    ],
+    galleryImages: ["https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800"]
+  },
+  {
+    id: 22,
+    name: "Summer Chiffon Sundress",
+    store: "Style Studio",
+    subtitle: "Lightweight Resortwear",
+    price: 1399,
+    oldPrice: 2199,
+    discount: "36% OFF",
+    rating: 4.7,
+    reviews: 940,
+    labels: ["Trending"],
+    image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&q=80&w=800",
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Sun Yellow", "Coral Peach"],
+    deliveryEstimate: "Delivery Tomorrow",
+    stockStatus: "In Stock",
+    category: "Women",
+    subcategory: "Dresses",
+    description: "Breeze through summer days in this effortless chiffon sundress. Featuring tier-layered frills and sweetheart neckline.",
+    highlights: [
+      "Lightweight semi-sheer chiffon with cotton lining",
+      "Tiered frill skirt layer",
+      "Elasticated smocked back",
+      "Vibrant summer colors"
+    ],
+    specs: [
+      { label: "Fabric", value: "Chiffon Georgette" },
+      { label: "Care Instructions", value: "Machine wash cold inside laundry bag" },
+      { label: "Fit Type", value: "A-Line Flared" },
+      { label: "Occasion", value: "Beach / Summer Resort" }
+    ],
+    galleryImages: ["https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&q=80&w=800"]
+  },
+  {
+    id: 23,
+    name: "Boho Tiered Floral Maxi Dress",
+    store: "Urban Tribe",
+    subtitle: "Bohemian Chic",
+    price: 1599,
+    oldPrice: 2499,
+    discount: "36% OFF",
+    rating: 4.8,
+    reviews: 1120,
+    labels: ["Best Seller"],
+    image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80&w=800",
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Floral Cream", "Botanical Green"],
+    deliveryEstimate: "Delivery Today",
+    stockStatus: "In Stock",
+    category: "Women",
+    subcategory: "Dresses",
+    description: "Channel effortless boho charm. Styled with three-tier flare, bishop long sleeves, and tassel waist tie.",
+    highlights: [
+      "Soft rayon crepe fabric",
+      "Subtle botanical floral print",
+      "Drawstring waist with tassel trim",
+      "Flowy ankle length"
+    ],
+    specs: [
+      { label: "Fabric", value: "100% Rayon" },
+      { label: "Care Instructions", value: "Cold hand wash" },
+      { label: "Fit Type", value: "Relaxed Boho Fit" },
+      { label: "Occasion", value: "Vacation / Daytime Outing" }
+    ],
+    galleryImages: ["https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&q=80&w=800"]
+  },
+  {
+    id: 24,
+    name: "Black Satin Bodycon Dress",
+    store: "Street Style",
+    subtitle: "Sleek Partywear",
+    price: 1799,
+    oldPrice: 2799,
+    discount: "35% OFF",
+    rating: 4.7,
+    reviews: 1680,
+    labels: ["Popular"],
+    image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=800",
+    sizes: ["XS", "S", "M", "L"],
+    colors: ["Obsidian Black", "Wine Red"],
+    deliveryEstimate: "Delivery Today",
+    stockStatus: "In Stock",
+    category: "Women",
+    subcategory: "Dresses",
+    description: "Sleek, sculpted, and striking. This black satin bodycon dress contours to your frame with adjustable ruched side detailing.",
+    highlights: [
+      "High-shine stretch satin",
+      "Side drawstrings for adjustable length",
+      "Cowl neckline",
+      "Double lined"
+    ],
+    specs: [
+      { label: "Fabric", value: "Polyester Satin Stretch" },
+      { label: "Care Instructions", value: "Hand wash cold" },
+      { label: "Fit Type", value: "Bodycon Ruched" },
+      { label: "Occasion", value: "Nightclub / Dinner Party" }
+    ],
+    galleryImages: ["https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&q=80&w=800"]
   }
 ];
+
