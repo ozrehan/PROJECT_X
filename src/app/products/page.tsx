@@ -83,7 +83,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   key={product.id}
                   className="group overflow-hidden rounded-[20px] border border-slate-200/90 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg flex flex-col justify-between"
                 >
-                  <Link href={`/products/${product.id}`} className="block relative aspect-[4/4.2] overflow-hidden bg-slate-50">
+                  <Link href={`/products/${product.id}`} className="block relative aspect-[3/4.2] overflow-hidden bg-slate-50">
                     <span className="absolute left-2.5 top-2.5 z-10 rounded-full bg-slate-900/90 backdrop-blur-sm px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
                       {tag}
                     </span>
