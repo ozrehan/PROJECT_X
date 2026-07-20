@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAddressStore } from "@/lib/addressStore";
 import AddressModal from "./AddressModal";
+import LocationDropdown from "./LocationDropdown";
 import { useWishlistStore } from "@/lib/wishlistStore";
 import { useCartStore } from "@/lib/cartStore";
 import {
@@ -106,6 +107,8 @@ function CategoryNavigation({ mobile = false }: { mobile?: boolean }) {
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
   const { addresses, selectedAddressId, setModalOpen, loadAddresses } = useAddressStore();
   const { wishlistItems, loadWishlist } = useWishlistStore();
   const { items: cartItems, loadCart } = useCartStore();
@@ -129,19 +132,31 @@ export default function Navbar() {
       <div className="bg-black text-white shadow-[0_3px_14px_rgba(0,0,0,0.3)]">
         <div className="mx-auto hidden h-20 max-w-[1440px] items-center gap-7 px-8 lg:flex">
           <Link href="/" className="shrink-0 font-serif text-5xl leading-none tracking-tight text-amber-400 transition hover:text-amber-300 animate-pulse-slow" aria-label="Oz home font-serif">Oz</Link>
-          <button
-            onClick={() => setModalOpen(true)}
-            className="flex shrink-0 items-center gap-2 rounded-lg px-2 py-2 text-left transition hover:bg-white/10"
-            aria-label="Select delivery location"
-          >
-            <MapPin size={17} className="text-amber-400" />
-            <span>
-              <span className="block text-[10px] leading-3 text-zinc-400 font-medium">Deliver to</span>
-              <span className="flex items-center gap-1 text-xs font-bold tracking-wide">
-                {truncatedLabel} <ChevronDown size={13} className="text-amber-400" />
+          
+          {/* Delivery Location Button with Dropdown Container */}
+          <div className="relative shrink-0">
+            <button
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
+              className="flex items-center gap-2 rounded-xl border border-zinc-800/80 bg-zinc-900/60 px-3 py-2 text-left transition hover:border-amber-500/40 hover:bg-zinc-900 focus:outline-none"
+              aria-label="Select delivery location"
+            >
+              <MapPin size={17} className="text-amber-400 shrink-0" />
+              <span>
+                <span className="block text-[10px] leading-3 text-zinc-400 font-medium">Deliver to</span>
+                <span className="flex items-center gap-1 text-xs font-bold tracking-wide">
+                  {truncatedLabel} <ChevronDown size={13} className={`text-amber-400 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`} />
+                </span>
               </span>
-            </span>
-          </button>
+            </button>
+
+            {/* Premium Delivery Location Popover */}
+            <LocationDropdown
+              isOpen={isDropdownOpen}
+              onClose={() => setIsDropdownOpen(false)}
+              onOpenModal={() => setModalOpen(true)}
+            />
+          </div>
+
           <div className="min-w-0 flex-1"><SearchBar /></div>
           <div className="flex shrink-0 items-center gap-3 xl:gap-5">
             <ActionButton label="Wishlist" badgeCount={wishlistItems.length}>
@@ -172,12 +187,12 @@ export default function Navbar() {
           {/* Mobile Location Selector Bar */}
           <div className="mt-3 flex items-center justify-between border-t border-zinc-800/80 pt-2.5">
             <button
-              onClick={() => setModalOpen(true)}
+              onClick={() => setIsDropdownOpen((prev) => !prev)}
               className="flex items-center gap-1.5 text-xs text-zinc-300 font-semibold hover:text-white transition"
             >
               <MapPin size={14} className="text-amber-400" />
               <span>Deliver to: <span className="text-white font-bold">{truncatedLabel}</span></span>
-              <ChevronDown size={11} className="text-zinc-500" />
+              <ChevronDown size={11} className={`text-zinc-500 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
             </button>
           </div>
         </div>
