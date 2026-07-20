@@ -114,6 +114,12 @@ export default function Categories() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  // Mouse Drag State
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+  const [draggedDistance, setDraggedDistance] = useState(0);
+
   const checkScrollability = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
@@ -136,8 +142,42 @@ export default function Categories() {
     }
   };
 
+  // Mouse Drag to Scroll Handlers
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setDraggedDistance(0);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeftState(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5; // Drag speed multiplier
+    scrollRef.current.scrollLeft = scrollLeftState - walk;
+    setDraggedDistance(Math.abs(walk));
+    checkScrollability();
+  };
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (draggedDistance > 5) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
   return (
-    <section className="w-full py-4 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="w-full py-4 max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 select-none">
       {/* Section Header */}
       <div className="flex items-center justify-between mb-3 border-b border-zinc-200/50 pb-2">
         <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-zinc-950 font-serif">
@@ -165,7 +205,7 @@ export default function Categories() {
         </div>
       </div>
 
-      {/* Compact Horizontal Carousel Container */}
+      {/* Compact Horizontal Carousel Container with Mouse Drag & Touch Support */}
       <div className="relative group/carousel">
         {/* Left Fade Indicator */}
         {canScrollLeft && (
@@ -180,22 +220,32 @@ export default function Categories() {
         <div
           ref={scrollRef}
           onScroll={checkScrollability}
-          className="flex gap-2.5 sm:gap-3.5 overflow-x-auto scroll-smooth py-1 px-0.5 no-scrollbar"
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          className={`
+            flex gap-2.5 sm:gap-3.5 overflow-x-auto py-1 px-0.5 no-scrollbar
+            ${isDragging ? "cursor-grabbing scroll-auto" : "cursor-grab scroll-smooth"}
+          `}
         >
           {categories.map((item) => (
             <Link
               key={item.name}
               href={`/categories/${item.name.toLowerCase().replace(/ /g, "-")}`}
-              className="group shrink-0 w-[95px] sm:w-[110px] lg:w-[118px] flex flex-col items-center cursor-pointer focus:outline-none"
+              onClick={handleCardClick}
+              className="group shrink-0 w-[95px] sm:w-[110px] lg:w-[118px] flex flex-col items-center focus:outline-none"
+              draggable={false}
             >
-              {/* Image Container Card - Small & Compact */}
-              <div className="relative h-24 sm:h-28 w-full overflow-hidden rounded-xl bg-zinc-100 border border-zinc-200/80 shadow-sm group-hover:border-amber-400 group-hover:shadow-md transition-all duration-200 group-hover:-translate-y-0.5">
+              {/* Image Container Card */}
+              <div className="relative h-24 sm:h-28 w-full overflow-hidden rounded-xl bg-zinc-100 border border-zinc-200/80 shadow-sm group-hover:border-amber-400 group-hover:shadow-md transition-all duration-200 group-hover:-translate-y-0.5 pointer-events-none">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
                   sizes="(max-width: 640px) 95px, 120px"
                   className="object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
+                  draggable={false}
                 />
 
                 {/* Subtle overlay */}
