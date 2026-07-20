@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { useAddressStore, Address } from "@/lib/addressStore";
+import { createPortal } from "react-dom";
+import { useAddressStore } from "@/lib/addressStore";
 import {
   MapPin,
   Compass,
@@ -24,20 +25,23 @@ export default function LocationDropdown({
   onOpenModal,
 }: LocationDropdownProps) {
   const popupRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
   const {
     addresses,
     selectedAddressId,
     setSelectedAddress,
     detectLocation,
-    isServiceable,
   } = useAddressStore();
 
   const [pincodeInput, setPincodeInput] = useState("");
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [searching, setSearching] = useState(false);
   const [locating, setLocating] = useState(false);
-  const [searchError, setSearchError] = useState("");
   const debounceTimer = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Close on outside click
   useEffect(() => {
@@ -77,7 +81,6 @@ export default function LocationDropdown({
   useEffect(() => {
     if (!pincodeInput.trim()) {
       setSuggestions([]);
-      setSearchError("");
       return;
     }
 
@@ -85,12 +88,11 @@ export default function LocationDropdown({
 
     debounceTimer.current = setTimeout(async () => {
       setSearching(true);
-      setSearchError("");
       try {
         const res = await fetch(
           `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(
             pincodeInput
-          )}&format=json&addressdetails=1&countrycodes=in&limit=4`
+          )}&format=json&addressdetails=1&countrycodes=in&limit=3`
         );
         if (res.ok) {
           const data = await res.json();
@@ -108,7 +110,7 @@ export default function LocationDropdown({
     };
   }, [pincodeInput]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const handleUseCurrentLocation = async () => {
     setLocating(true);
@@ -127,29 +129,28 @@ export default function LocationDropdown({
 
   const handleApplySearch = () => {
     if (!pincodeInput.trim()) return;
-    // Open full modal to confirm or add details
     onOpenModal();
     onClose();
   };
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-fadeIn">
-      {/* Compact Location Modal Container matching Amazon layout but in OZ dark gold luxury aesthetic */}
+  const modalContent = (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
+      {/* Small, tight centered box (max-w-[360px]) */}
       <div
         ref={popupRef}
         className={`
-          w-full max-w-[420px] rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-[0_25px_60px_rgba(0,0,0,0.9)]
-          p-6 transition-all duration-200 ease-out transform animate-in fade-in-0 zoom-in-95
+          w-full max-w-[360px] sm:max-w-[380px] rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-2xl
+          p-5 transition-all duration-200 ease-out transform animate-in fade-in-0 zoom-in-95
         `}
       >
         {/* Header */}
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between pb-1">
           <div>
-            <h2 className="text-base font-bold text-white tracking-tight">
+            <h2 className="text-sm font-bold text-white tracking-tight">
               Choose your location
             </h2>
-            <p className="text-xs text-zinc-400 mt-1 leading-snug">
-              Select a delivery location to see product availability and delivery options
+            <p className="text-[11px] text-zinc-400 mt-0.5 leading-tight">
+              Select delivery location for product availability
             </p>
           </div>
           <button
@@ -157,45 +158,45 @@ export default function LocationDropdown({
             className="rounded-lg p-1 text-zinc-400 hover:bg-zinc-900 hover:text-white transition"
             aria-label="Close popup"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
         {/* Address Cards List */}
-        <div className="mt-4 space-y-2.5 max-h-[260px] overflow-y-auto pr-1 no-scrollbar">
+        <div className="mt-3 space-y-2 max-h-[200px] overflow-y-auto pr-0.5 no-scrollbar">
           {addresses.map((addr) => {
             const isSelected = selectedAddressId === addr.id;
-            const fullAddressText = `${addr.flat}, ${addr.building ? addr.building + ", " : ""}${addr.street}, ${addr.area ? addr.area + ", " : ""}${addr.city} ${addr.pincode}`;
+            const fullAddressText = `${addr.flat}, ${addr.building ? addr.building + ", " : ""}${addr.street}, ${addr.area ? addr.area + ", " : ""}${addr.city}`;
 
             return (
               <div
                 key={addr.id}
                 onClick={() => handleSelectAddress(addr.id)}
                 className={`
-                  relative rounded-xl border p-3.5 text-left cursor-pointer transition-all duration-150
+                  relative rounded-xl border p-2.5 text-left cursor-pointer transition-all duration-150
                   ${
                     isSelected
-                      ? "border-2 border-amber-400 bg-amber-500/10 shadow-sm"
+                      ? "border-2 border-amber-400 bg-amber-500/10"
                       : "border border-zinc-800 bg-zinc-900/60 hover:border-zinc-700 hover:bg-zinc-900"
                   }
                 `}
               >
-                <div className="flex items-start justify-between gap-2">
+                <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-bold text-white">
                     {addr.name ? `${addr.name}` : `${addr.type}`}
                     {addr.name && <span className="text-zinc-400 font-normal ml-1">({addr.type})</span>}
                   </span>
                   {isSelected && (
-                    <Check size={15} className="text-amber-400 shrink-0 mt-0.5" />
+                    <Check size={14} className="text-amber-400 shrink-0" />
                   )}
                 </div>
 
-                <p className="text-xs text-zinc-300 mt-1 leading-relaxed line-clamp-2">
+                <p className="text-[11px] text-zinc-300 mt-0.5 leading-snug line-clamp-1">
                   {fullAddressText}
                 </p>
 
                 {addr.isDefault && (
-                  <span className="text-[10px] text-amber-400 font-semibold block mt-1.5">
+                  <span className="text-[9px] text-amber-400 font-medium block mt-0.5">
                     Default address
                   </span>
                 )}
@@ -205,7 +206,7 @@ export default function LocationDropdown({
         </div>
 
         {/* Quick Action Links */}
-        <div className="mt-4 space-y-2 pt-2 text-xs">
+        <div className="mt-3 space-y-1.5 pt-1 text-[11px]">
           <button
             onClick={() => {
               onOpenModal();
@@ -213,7 +214,7 @@ export default function LocationDropdown({
             }}
             className="flex items-center gap-1.5 text-amber-400 hover:text-amber-300 font-medium transition"
           >
-            <Plus size={14} /> Add an address or manage saved locations
+            <Plus size={13} /> Add address or manage locations
           </button>
 
           <button
@@ -222,40 +223,40 @@ export default function LocationDropdown({
             className="flex items-center gap-1.5 text-zinc-300 hover:text-amber-400 font-medium transition disabled:opacity-50"
           >
             {locating ? (
-              <Loader2 size={14} className="animate-spin text-amber-400" />
+              <Loader2 size={13} className="animate-spin text-amber-400" />
             ) : (
-              <Compass size={14} className="text-amber-400" />
+              <Compass size={13} className="text-amber-400" />
             )}
-            <span>Use my current location (Detect via GPS)</span>
+            <span>Use current location (GPS)</span>
           </button>
         </div>
 
         {/* Divider */}
-        <div className="relative my-4 flex items-center justify-center">
+        <div className="relative my-3 flex items-center justify-center">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-zinc-800" />
           </div>
-          <span className="relative bg-zinc-950 px-3 text-[11px] text-zinc-500">
-            or enter an Indian pincode
+          <span className="relative bg-zinc-950 px-2 text-[10px] text-zinc-500">
+            or enter pincode
           </span>
         </div>
 
-        {/* Pincode / Locality Search Input + Apply Button */}
+        {/* Pincode Input + Apply Button */}
         <div className="relative">
           <div className="flex gap-2">
-            <div className="flex flex-1 items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-3 py-2 focus-within:border-amber-400 transition">
-              <Search size={14} className="text-zinc-500 shrink-0" />
+            <div className="flex flex-1 items-center gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 px-2.5 py-1.5 focus-within:border-amber-400 transition">
+              <Search size={13} className="text-zinc-500 shrink-0" />
               <input
                 value={pincodeInput}
                 onChange={(e) => setPincodeInput(e.target.value)}
-                placeholder="Enter pincode or locality"
+                placeholder="Pincode or locality"
                 className="w-full bg-transparent text-xs text-white outline-none placeholder:text-zinc-500"
               />
-              {searching && <Loader2 size={14} className="animate-spin text-amber-400 shrink-0" />}
+              {searching && <Loader2 size={13} className="animate-spin text-amber-400 shrink-0" />}
             </div>
             <button
               onClick={handleApplySearch}
-              className="rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-black hover:bg-amber-400 active:scale-95 transition"
+              className="rounded-xl bg-amber-500 px-3.5 py-1.5 text-xs font-bold text-black hover:bg-amber-400 active:scale-95 transition"
             >
               Apply
             </button>
@@ -263,7 +264,7 @@ export default function LocationDropdown({
 
           {/* Autocomplete Suggestions */}
           {suggestions.length > 0 && (
-            <div className="absolute left-0 right-0 z-30 mt-1.5 max-h-40 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950 p-1.5 shadow-2xl space-y-1">
+            <div className="absolute left-0 right-0 z-30 mt-1 max-h-36 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950 p-1 shadow-2xl space-y-1">
               {suggestions.map((place) => (
                 <button
                   key={place.place_id}
@@ -271,14 +272,14 @@ export default function LocationDropdown({
                     onOpenModal();
                     onClose();
                   }}
-                  className="flex w-full items-start gap-2 rounded-lg p-2 text-left hover:bg-zinc-900 transition"
+                  className="flex w-full items-start gap-2 rounded-lg p-1.5 text-left hover:bg-zinc-900 transition"
                 >
-                  <MapPin size={13} className="mt-0.5 text-amber-400 shrink-0" />
+                  <MapPin size={12} className="mt-0.5 text-amber-400 shrink-0" />
                   <div>
                     <p className="text-xs font-semibold text-white truncate">
                       {place.display_name.split(",")[0]}
                     </p>
-                    <p className="text-[10px] text-zinc-400 line-clamp-1">
+                    <p className="text-[9px] text-zinc-400 line-clamp-1">
                       {place.display_name}
                     </p>
                   </div>
@@ -290,4 +291,6 @@ export default function LocationDropdown({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
