@@ -135,13 +135,11 @@ export default function LocationDropdown({
 
   const modalContent = (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
-      {/* Small, tight centered box (max-w-[360px]) */}
+      {/* Explicit 380px narrow centered card */}
       <div
         ref={popupRef}
-        className={`
-          w-full max-w-[360px] sm:max-w-[380px] rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-2xl
-          p-5 transition-all duration-200 ease-out transform animate-in fade-in-0 zoom-in-95
-        `}
+        style={{ width: "380px", maxWidth: "90vw" }}
+        className="mx-auto rounded-2xl bg-zinc-950 text-white border border-zinc-800 shadow-[0_25px_70px_rgba(0,0,0,0.9)] p-5 transition-all duration-200 ease-out transform animate-in fade-in-0 zoom-in-95 shrink-0"
       >
         {/* Header */}
         <div className="flex items-start justify-between pb-1">
@@ -163,7 +161,7 @@ export default function LocationDropdown({
         </div>
 
         {/* Address Cards List */}
-        <div className="mt-3 space-y-2 max-h-[200px] overflow-y-auto pr-0.5 no-scrollbar">
+        <div className="mt-3 space-y-2 max-h-[220px] overflow-y-auto pr-0.5 no-scrollbar">
           {addresses.map((addr) => {
             const isSelected = selectedAddressId === addr.id;
             const fullAddressText = `${addr.flat}, ${addr.building ? addr.building + ", " : ""}${addr.street}, ${addr.area ? addr.area + ", " : ""}${addr.city}`;
@@ -173,7 +171,7 @@ export default function LocationDropdown({
                 key={addr.id}
                 onClick={() => handleSelectAddress(addr.id)}
                 className={`
-                  relative rounded-xl border p-2.5 text-left cursor-pointer transition-all duration-150
+                  relative rounded-xl border p-3 text-left cursor-pointer transition-all duration-150
                   ${
                     isSelected
                       ? "border-2 border-amber-400 bg-amber-500/10"
@@ -191,12 +189,12 @@ export default function LocationDropdown({
                   )}
                 </div>
 
-                <p className="text-[11px] text-zinc-300 mt-0.5 leading-snug line-clamp-1">
+                <p className="text-[11px] text-zinc-300 mt-1 leading-snug line-clamp-2">
                   {fullAddressText}
                 </p>
 
                 {addr.isDefault && (
-                  <span className="text-[9px] text-amber-400 font-medium block mt-0.5">
+                  <span className="text-[9px] text-amber-400 font-semibold block mt-1">
                     Default address
                   </span>
                 )}
@@ -206,7 +204,7 @@ export default function LocationDropdown({
         </div>
 
         {/* Quick Action Links */}
-        <div className="mt-3 space-y-1.5 pt-1 text-[11px]">
+        <div className="mt-3.5 space-y-2 pt-1 text-[11px]">
           <button
             onClick={() => {
               onOpenModal();
@@ -232,7 +230,7 @@ export default function LocationDropdown({
         </div>
 
         {/* Divider */}
-        <div className="relative my-3 flex items-center justify-center">
+        <div className="relative my-3.5 flex items-center justify-center">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-zinc-800" />
           </div>
